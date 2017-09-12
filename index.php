@@ -70,7 +70,8 @@ header("location: profile.php");
         <footer>
             <p>&copy; 2017 | <a href="http://html5-templates.com/" target="_blank" rel="nofollow">HTML5 Templates</a></p>
             <address>
-			Contact: <a href="joeric1028@icloud.com">Mail me</a>
+            Contact: <a href="joeric1028@icloud.com">Mail me</a>
+            mailto:josepricardo%40su.edu.ph
 		</address>
         </footer>
     </body>
