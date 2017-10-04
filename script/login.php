@@ -1,35 +1,59 @@
 <?php
-session_start(); // Starting Session
-$err='';
-$error=''; // Variable To Store Error Message
-if (isset($_POST['submit'])) {
-if (empty($_POST['username']) || empty($_POST['password'])) {
-$error = "Username or Password is empty!";
-}
-else
+require 'database.php';
+
+session_start();
+
+$_SESSION['Error'] = "";
+if (isset($_POST['Submit'])) 
 {
-// Define $username and $password
-$username=$_POST['username'];
-$password=$_POST['password'];
-// Establishing Connection with Server by passing server_name, user_id and password as a parameter
-$connection = mysqli_connect("localhost", "root", "defaultricardo");
-// To protect MySQL injection for Security purpose
-$username = stripslashes($username);
-$password = stripslashes($password);
-$username = mysqli_real_escape_string($connection,$username);
-$password = mysqli_real_escape_string($connection,$password);
-// Selecting Database
-$db = mysqli_select_db($connection,"company");
-// SQL query to fetch information of registerd users and finds user match.
-$query = mysqli_query($connection,"select * from user where password='$password' AND username='$username'");
-$rows = mysqli_num_rows($query);
-if ($rows == 1) {
-$_SESSION['login_user']=$username; // Initializing Session
-header("location: profile.php"); // Redirecting To Other Page
-} else {
-$error = "Username or Password is invalid";
+    if (empty($_POST['idnum']) || empty($_POST['pin']))$_SESSION['Error'] = "ID Number or PIN is empty!";
+    else{
+        $idnum = $_POST['idnum'];
+        $pin = $_POST['pin'];
+
+        // To protect MySQL injection for Security purpose
+        $idnum = stripslashes($idnum);
+        $pin = stripslashes($pin);
+        $idnum = mysqli_real_escape_string($con,$idnum);
+        $pin = mysqli_real_escape_string($con,$pin);
+
+        // SQL query to fetch information of registerd users and finds user match.
+        $query = mysqli_query($con,"SELECT * FROM student WHERE pin='$pin' AND idnum='$idnum';");
+        $rows = mysqli_num_rows($query);
+        if ($rows == 1) {
+            $_SESSION['login_user']=$idnum; // Initializing Session
+            $_SESSION['Error'] = "Successfully Login!";
+            header('Refresh: 1; URL=../profile'); // Redirecting To Other Page
+        }else $_SESSION['Error'] = "ID Number or PIN is invalid";
+        mysqli_close($con); // Closing Connection
+    }
 }
-mysqli_close($connection); // Closing Connection
-}
+
+if (isset($_POST['studentsubmit'])) 
+{
+    if (empty($_POST['idnum']) || empty($_POST['pin']))
+    {
+        $error = "ID Number or PIN is empty!";
+    }else{
+        $idnum=$_POST['idnum'];
+        $pin=$_POST['pin'];
+
+        // To protect MySQL injection for Security purpose
+        $idnum = stripslashes($idnum);
+        $pin = stripslashes($pin);
+        $idnum = mysqli_real_escape_string($con,$idnum);
+        $pin = mysqli_real_escape_string($con,$pin);
+
+        // SQL query to fetch information of registerd users and finds user match.
+        $query = mysqli_query($con,"SELECT * FROM student WHERE pin='$pin' AND idnum='$idnum';");
+        $rows = mysqli_num_rows($query);
+    if ($rows == 1) {
+        $_SESSION['login_user']=$idnum; // Initializing Session
+        header("location: ../profile"); // Redirecting To Other Page
+        }else{
+        $error = "ID Number or PIN is invalid";
+        }
+    mysqli_close($con); // Closing Connection
+    }
 }
 ?>

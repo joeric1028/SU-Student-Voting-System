@@ -1,0 +1,24 @@
+{
+    "remotePath": "./public_html/beta",
+    "host": "ftp.susaems.heliohost.org",
+    "username": "josepric",
+    "password": "defaultricardo",
+    "port": 21,
+    "secure": false,
+    "protocol": "ftp",
+    "uploadOnSave": true,
+    "passive": false,
+    "debug": false,
+    "privateKeyPath": null,
+    "passphrase": null,
+    "ignore": [
+        "\\.vscode",
+        "\\.git",
+        "\\.DS_Store"
+    ],
+    "generatedFiles": {
+        "uploadOnSave": true,
+        "extensionsToInclude": [],
+        "path": ""
+    }
+}
