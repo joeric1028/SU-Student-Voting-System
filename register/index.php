@@ -1,16 +1,21 @@
 <?php
-require('../script/register.php'); // Requires Login Script
-if(isset($_SESSION['register_user']))header("location: ../profile");
+require '../script/register.php'; // Requires Login Script
+require '../script/session.php';
+if(!isset($_SESSION['login_admin_id']))
+{
+    $_SESSION['Error'] = "Please Login First!";
+    header('location: ../admin');
+}
 ?>
 <!DOCTYPE html>
-<html lang="en" class="no-js">
+<html lang="en">
 
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="../img/vote_logo.png">
-    <link rel="canonical" href="http://html5-templates.com/" />
+    <link rel="canonical" href="http://html5-templates.com/">
     <title>Voting Management System</title>
     <meta name="description" content="Home Page for Voting Management System.">
     <link href="../css/style.css" rel="stylesheet" type="text/css">
@@ -18,13 +23,20 @@ if(isset($_SESSION['register_user']))header("location: ../profile");
 
 <body>
 <header id = "pageContent">
-<div id="logo"><a href="../"><img src="../img/vote_logo.png"></a>SU Voting</div>
+<div id="logo"><a href="../"><img src="../img/vote_logo.png"></a>SU VOTING</div>
     <nav>
         <ul>
-            <li><a href="../candidate">CANDIDATE</a></li>
-            <li><a href="../student">STUDENT</a></li>
-            <li><a href="../vote">VOTE</a></li>
-            <li><a href="../login">ADMIN</a></li>
+            <?php
+                if(isset($_SESSION['login_admin_id']))echo "<li><a href='../candidate'>CANDIDATE</a></li>
+                                                        <li><a href='../student'>STUDENT</a></li>
+                                                        <li><a href='../profile'>MY PROFILE</a></li>";
+                else if(isset($_SESSION['login_voter_id']))
+                {
+                    echo '<li><a href="../vote">VOTE</a></li>
+                        <li><a href="../voterprofile">MY PROFILE</a></li>';
+                }else echo '<li><a href="../voter">VOTER</a></li>
+                        <li><a href="../admin">ADMIN</a></li>';
+            ?>
         </ul>
     </nav>
 </header>
@@ -47,7 +59,7 @@ if(isset($_SESSION['register_user']))header("location: ../profile");
                 <input id="lastname" name="lastname" type="text">
                 <label>Year Level     :</label>
                 <input id="yearlevel" name="yearlevel" type="text">
-                <a href="../login" class ="reg">Login</a>
+                <a href="../admin" class ="reg">Login</a>
                 <input name="submit" type="submit" value=" Register ">
                 <span><?php echo $error; ?></span>
                 </form>

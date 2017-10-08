@@ -27,27 +27,21 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
     else $gender = test_input($_POST["gender"]);
 }
 
-
-
 if (isset($_POST['submit'])) 
 {
     if (empty($_POST['idnum']) || empty($_POST['pin'])) 
     {
         $error = "ID Number or PIN is empty!";
-    }
-    else
-    {
+    }else{
         $idnum=$_POST['idnum'];
         $pin=$_POST['pin'];
-
         // To protect MySQL injection for Security purpose
         $idnum = stripslashes($idnum);
         $pin = stripslashes($pin);
         $idnum = mysqli_real_escape_string($con, $idnum);
         $pin = mysqli_real_escape_string($con, $pin);
         // SQL query to fetch information of registerd users and finds user match.
-        $query = mysqli_query($con,"select * from login where idnum='$idnum';");
-
+        $query = mysqli_query($con,"SELECT * FROM student WHERE idnum='$idnum';");
         $rows = mysqli_num_rows($query);
         if ($rows == 1) 
         {
@@ -55,8 +49,8 @@ if (isset($_POST['submit']))
         }else if ($rows == 0) 
         {
             $error = "Registration Sucessful!";
-            mysqli_query($con,"insert into user (idnum, PIN) values ('$idnum','$pin');");
-            $_SESSION['login_user']=$idnum; // Initializing Session
+            mysqli_query($con,"INSERT INTO student (idnum, PIN) VALUES ('$idnum','$pin');");
+            $_SESSION['login_admin_id']=$idnum; // Initializing Session
             header("location: ../"); // Redirecting To Other Page
         }
         mysqli_close($con); // Closing Connection

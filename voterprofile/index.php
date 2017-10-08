@@ -13,10 +13,10 @@
             header('Refresh: 1; URL=../');
         }
     }else{
-        if(!isset($_SESSION['login_admin_id']))
+        if(!isset($_SESSION['login_voter_id']))
         {
             $_SESSION['Error'] = "Please Login First!";
-            header('location: ../admin');
+            header('location: ../voter');
         }    
     }
 ?>
@@ -53,41 +53,26 @@
             </ul>
         </nav>
 </header>
-    <section>
-    <strong>
-        <div id="profile">
-            <b id="welcome">Welcome
-            <?php 
-                if(isset($_SESSION['login_admin_id']))
-                {
-                    echo "Admin: ".$row['fullname'].'<form action="index.php" method="post">
-                    <input type="submit" value="LOGOUT" class = "w3-button" name = "logout_user">
-                    </form>'; 
-                    if(empty($error2)){
-                    }else{
-                        echo $error2;
-                    }
-                }else if(isset($_SESSION['login_voter_id']))
-                {
-                    echo "Admin: ".$row['fullname'].'<form action="index.php" method="post">
-                    <input type="submit" value="LOGOUT" class = "w3-button" name = "logout_user">
-                    </form>'; 
-                    if(empty($error2)){
-                    }else{
-                        echo $error2;
-                    }
-                }else{
-                    echo "Guest:";
-                }
-            ?>
-            </b>
-        </div>
-    </strong>
-</section>
+        <section>
+            <strong>
+                <div id="profile">
+                    <b id="welcome">Welcome : <?php echo $row['fullname']; ?></b>
+                    <form action="index.php" method="post">
+                        <input type="submit" value="LOGOUT" class = "w3-button" name = "logout_user">
+                    </form>
+                    <?php 
+                        if(empty($error)){
+                        }else{
+                            echo $error;
+                        }
+                        ?>
+                </div>
+            </strong>
+        </section>
         <section id="pageContent">
             <main role="main">
                 <article>
-                    <h1>My Admin Profile</h1>  
+                    <h1>My Voter Profile</h1>  
                 </article>
                 <article>
                     <div class="w3-container w3-center">

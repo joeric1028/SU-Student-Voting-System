@@ -1,6 +1,6 @@
 <?php
 require '../script/login.php'; // Require Login Script
-if(isset($_SESSION['login_admin']))
+if(isset($_SESSION['login_voter']))
 {
     $_SESSION['Error'] = "You're already logged in!";
     header('Refresh: 2; URL=../');
@@ -22,24 +22,19 @@ if(isset($_SESSION['login_admin']))
     </head>
 
     <body>
-    <header id = "pageContent">
-    <div id="logo"><a href="../"><img src="../img/vote_logo.png"></a>SU VOTING</div>
+        <header id = "pageContent">
+        <div id="logo"><a href="../"><img src="../img/vote_logo.png"></a>SU VOTING</div>
         <nav>
             <ul>
                 <?php
-                    if(isset($_SESSION['login_admin_id']))echo "<li><a href='../candidate'>CANDIDATE</a></li>
-                                                            <li><a href='../student'>STUDENT</a></li>
-                                                            <li><a href='../profile'>MY PROFILE</a></li>";
-                    else if(isset($_SESSION['login_voter_id']))
-                    {
-                        echo '<li><a href="../vote">VOTE</a></li>
-                            <li><a href="../voterprofile">MY PROFILE</a></li>';
-                    }else echo '<li><a href="../voter">VOTER</a></li>
-                            <li><a href="../admin">ADMIN</a></li>';
+                    if(isset($_SESSION['login_admin']))echo "<li><a href='../candidate'>CANDIDATE</a></li>
+                                                <li><a href='../student'>STUDENT</a></li>";
                 ?>
+                <li><a href="../voter">VOTE</a></li>
+                <li><a href="../admin">ADMIN</a></li>
             </ul>
         </nav>
-</header>
+        </header>
         <section>
             <strong>
             </strong>
@@ -47,7 +42,7 @@ if(isset($_SESSION['login_admin']))
         <section id="pageContentCenter">
             
                 <div class="w3-container w3-center w3-round-xxlarge w3-blue w3-padding-16">
-                    <h2>Admin Login</h2>
+                    <h2>Vote Login</h2>
                 </div>
                 <div class = "w3-container">
                     <form class="w3-container" method="post" action="index.php">
@@ -62,7 +57,7 @@ if(isset($_SESSION['login_admin']))
                             unset($_SESSION['Error']);
                             }else unset($_SESSION['Error']);
                         ?>
-                        <input class="w3-container w3-button w3-round-xxlarge w3-blue" name="Submit" type="submit" value="Submit">    
+                        <input class="w3-container w3-button w3-round-xxlarge w3-blue" name="studentSubmit" type="submit" value="Submit">    
                     </form>
                 <br>
                 </div>

@@ -1,7 +1,11 @@
 <?php
-require '../script/login.php'; // Includes Login Script
-if(isset($_SESSION['login_user']))header("location: ../");
-$error = 'No Candidate';
+require '../script/session.php'; // Includes Login Script
+if(!isset($_SESSION['login_admin_id']))
+{
+    $_SESSION['Error'] = "Please Login First!";
+    header('location: ../admin');
+}
+$error = 'No Candidate Yet';
 ?>
 
 <!DOCTYPE html>
@@ -20,17 +24,54 @@ $error = 'No Candidate';
     </head>
     <body>  
     <header id = "pageContent">
-    <div id="logo"><a href="../"><img src="../img/vote_logo.png"></a>SU Voting</div>
+    <div id="logo"><a href="../"><img src="../img/vote_logo.png"></a>SU VOTING</div>
         <nav>
             <ul>
-                <li><a href="../candidate">CANDIDATE</a></li>
-                <li><a href="../student">STUDENT</a></li>
-                <li><a href="../vote">VOTE</a></li>
-                <li><a href="../admin">ADMIN</a></li>
+                <?php
+                    if(isset($_SESSION['login_admin_id']))echo "<li><a href='../candidate'>CANDIDATE</a></li>
+                                                            <li><a href='../student'>STUDENT</a></li>
+                                                            <li><a href='../profile'>MY PROFILE</a></li>";
+                    else if(isset($_SESSION['login_voter_id']))
+                    {
+                        echo '<li><a href="../vote">VOTE</a></li>
+                            <li><a href="../voterprofile">MY PROFILE</a></li>';
+                    }else echo '<li><a href="../voter">VOTER</a></li>
+                            <li><a href="../admin">ADMIN</a></li>';
+                ?>
             </ul>
         </nav>
 </header>
-        <section><br></section>
+<section>
+            <strong>
+                <div id="profile">
+                    <b id="welcome">Welcome
+                    <?php 
+                        if(isset($_SESSION['login_admin_id']))
+                        {
+                            echo "Admin: ".$row['fullname'].'<form action="index.php" method="post">
+                            <input type="submit" value="LOGOUT" class = "w3-button" name = "logout_user">
+                            </form>'; 
+                            if(empty($error2)){
+                            }else{
+                                echo $error2;
+                            }
+                        }else if(isset($_SESSION['login_voter_id']))
+                        {
+                            echo "Admin: ".$row['fullname'].'<form action="index.php" method="post">
+                            <input type="submit" value="LOGOUT" class = "w3-button" name = "logout_user">
+                            </form>'; 
+                            if(empty($error2)){
+                            }else{
+                                echo $error2;
+                            }
+                        }else{
+                            echo "Guest:";
+                        }
+                    ?>
+                    </b>
+                </div>
+            </strong>
+        </section>
         <section id="pageContent">
             <main role="main">
                 <article>

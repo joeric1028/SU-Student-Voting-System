@@ -218,6 +218,12 @@ nav ul {
     border: none;
 }
 
+#pageContentCenter {
+    width: 500px;
+    margin: auto;
+    border: none;
+}
+
 main {
     float: left;
     width: 60%;
