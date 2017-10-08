@@ -64,14 +64,21 @@
                             }else{
                                 echo $error2;
                             }
+                            
                         }else if(isset($_SESSION['login_voter_id']))
                         {
-                            echo "Admin: ".$row['fullname'].'<form action="index.php" method="post">
+                            echo "Voter: ".$row['fullname'].'<form action="index.php" method="post">
                             <input type="submit" value="LOGOUT" class = "w3-button" name = "logout_user">
                             </form>'; 
                             if(empty($error2)){
                             }else{
                                 echo $error2;
+                            }
+                            if(isset($_SESSION['error3'])){
+                                echo $_SESSION['error3'];
+                                unset($_SESSION['error3']);
+                            }else{
+                                unset($_SESSION['error3']);
                             }
                         }else{
                             echo "Guest:";

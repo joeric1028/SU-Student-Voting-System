@@ -3,7 +3,7 @@ require 'database.php';
 
 session_start();
 
-if (isset($_POST['Submit'])) 
+if(isset($_POST['Submit'])) 
 {
         $idnum = $_POST['idnum'];
         $pin = $_POST['pin'];
@@ -23,9 +23,7 @@ if (isset($_POST['Submit']))
             header('Refresh: 2; URL=../profile'); // Redirecting To Other Page
         }else $_SESSION['Error'] = "ID Number or password is incorrect";
         mysqli_close($con); // Closing Connection
-}
-
-if (isset($_POST['studentSubmit'])) 
+}else if (isset($_POST['studentSubmit'])) 
 {
     if (empty($_POST['idnum']) || empty($_POST['pin']))
     {
@@ -52,6 +50,12 @@ if (isset($_POST['studentSubmit']))
         $_SESSION['Error'] = "ID Number or PIN is invalid";
     }
     mysqli_close($con); // Closing Connection
+    }
+}else{
+    if(isset($_SESSION['login_voter']) || isset($_SESSION['login_admin']))
+    {
+        $_SESSION['Error'] = "You're already logged in!";
+        header('Refresh: 2; URL=../');
     }
 }
 ?>

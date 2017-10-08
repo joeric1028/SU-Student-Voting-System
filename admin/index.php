@@ -1,10 +1,6 @@
 <?php
 require '../script/login.php'; // Require Login Script
-if(isset($_SESSION['login_admin']))
-{
-    $_SESSION['Error'] = "You're already logged in!";
-    header('Refresh: 2; URL=../');
-}
+
 ?>
 
 <!DOCTYPE html>

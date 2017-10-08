@@ -53,22 +53,37 @@ if(isset($_POST['logout_voter_id']))
             </ul>
         </nav>
 </header>
-    <section>
-            <strong>
-                <div id="profile">
-                    <b id="welcome">Welcome : <?php echo $row['fullname']; ?></b>
-                    <form action="index.php" method="post">
-                        <input type="submit" value="LOGOUT" class = "w3-button" name = "logout_voter_id">
-                    </form>
-                    <?php 
-                        if(empty($error)){
-                        }else{
-                            echo $error;
-                        }
-                        ?>
-                </div>
-            </strong>
-        </section>
+<section>
+<strong>
+    <div id="profile">
+        <b id="welcome">Welcome
+        <?php 
+            if(isset($_SESSION['login_admin_id']))
+            {
+                echo "Admin: ".$row['fullname'].'<form action="index.php" method="post">
+                <input type="submit" value="LOGOUT" class = "w3-button" name = "logout_user">
+                </form>'; 
+                if(empty($error2)){
+                }else{
+                    echo $error2;
+                }
+            }else if(isset($_SESSION['login_voter_id']))
+            {
+                echo "Voter: ".$row['fullname'].'<form action="index.php" method="post">
+                <input type="submit" value="LOGOUT" class = "w3-button" name = "logout_user">
+                </form>'; 
+                if(empty($error2)){
+                }else{
+                    echo $error2;
+                }
+            }else{
+                echo "Guest:";
+            }
+        ?>
+        </b>
+    </div>
+</strong>
+</section>
         <section id="pageContent">
             <main role="main">
                 <article>

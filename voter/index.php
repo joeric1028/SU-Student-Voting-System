@@ -1,10 +1,5 @@
 <?php
 require '../script/login.php'; // Require Login Script
-if(isset($_SESSION['login_voter']))
-{
-    $_SESSION['Error'] = "You're already logged in!";
-    header('Refresh: 2; URL=../');
-}
 ?>
 
 <!DOCTYPE html>
@@ -30,7 +25,7 @@ if(isset($_SESSION['login_voter']))
                     if(isset($_SESSION['login_admin']))echo "<li><a href='../candidate'>CANDIDATE</a></li>
                                                 <li><a href='../student'>STUDENT</a></li>";
                 ?>
-                <li><a href="../voter">VOTE</a></li>
+                <li><a href="../voter">VOTER</a></li>
                 <li><a href="../admin">ADMIN</a></li>
             </ul>
         </nav>
