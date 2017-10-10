@@ -10,10 +10,17 @@
             $error2 = "Successfully Logout! Please come back soon!";
             header('Refresh: 1; URL=../');
         }else{
-            $error2 = "Already Logouadobet! Please come back soon!";
+            $error2 = "Already Logout! Please come back soon!";
             header('Refresh: 1; URL=../');
         }
     }
+    $login_college = '';
+    if(!isset($_SESSION['login_admin_id'])&&!isset($_SESSION['login_voter_id']))
+    {
+    }else{
+        $login_college = $_SESSION['college'];
+    }
+    
 ?>
 <!DOCTYPE html>
 
@@ -21,9 +28,9 @@
 
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>SU Voting</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>SU VOTING</title>
         <link rel="shortcut icon" href="../img/vote_logo.png">
         <meta name="description" content="Home Page for Voting Management System.">
         <link rel="stylesheet" href="../css/w3.css"> 
@@ -38,7 +45,8 @@
                     <?php
                         if(isset($_SESSION['login_admin_id']))echo "<li><a href='../candidate'>CANDIDATE</a></li>
                                                                 <li><a href='../student'>STUDENT</a></li>
-                                                                <li><a href='../profile'>MY PROFILE</a></li>";
+                                                                <li><a href='../profile'>MY PROFILE</a></li>
+                                                                <li><a href='../register'>REGISTER</a></li>";
                         else if(isset($_SESSION['login_voter_id']))
                         {
                             echo '<li><a href="../vote">VOTE</a></li>
@@ -60,10 +68,10 @@
                             echo "Admin: ".$row['fullname'].'<form action="index.php" method="post">
                             <input type="submit" value="LOGOUT" class = "w3-button" name = "logout_user">
                             </form>'; 
-                            if(empty($error2)){
-                            }else{
-                                echo $error2;
-                            }
+                            if(!empty($error2))echo $error2;
+                            if(isset($_SESSION['error3'])){
+                                echo $_SESSION['error3'];
+                            }else unset($_SESSION['error3']);
                             
                         }else if(isset($_SESSION['login_voter_id']))
                         {
@@ -90,12 +98,25 @@
         </section>
         <section>
             <article>
-                <h1>Candidates</h1>
+                <h1>Candidates
+                    <?php
+                        if(!empty($login_college))echo "($login_college)</h1>";
+                        else
+                        {
+                            echo "</h1><select class='w3-right'><option value=''>Select College</option>";
+                            $result = mysqli_query($con, "SELECT name FROM college;");
+                            while($row = mysqli_fetch_assoc($result))
+                            {
+                                echo "<option value='{$row['name']}'>{$row['name']}</option>";
+                            }
+                            echo "</select>"; 
+                        } 
+                    ?>
                 <p>For <?php echo $currentyear;?></p>  
             </article>
             <article>
                 <h2>Governor</h2>
-                <p>
+                <p> 
                     <table class="w3-table-all w3-hoverable">
                         <thead>
                             <tr>
@@ -107,32 +128,35 @@
                             </tr>
                         </thead>
                 <?php
-                    $result = mysqli_query($con,"SELECT * FROM listofcandidates WHERE candidatetype ='Governor' AND candidateyear ='$currentyear';");
-                    if($result != true  ){
-                        while($row = mysqli_fetch_assoc($result))
-                        {
-                            $governor = $row['idnum'];
-                            $college = $row['college'];
-                            $result2 = mysqli_query($con, "SELECT * FROM listofstudents WHERE college ='$college';");
-                            $result3 = mysqli_query($con, "SELECT * FROM votedetails WHERE governor ='$governor';");
-                            $row2 = mysqli_num_rows($result2);
-                            $row3 = mysqli_num_rows($result3);
-                            $percent = $row3/$row2;
-                            echo "<tr>
-                            <td>{$row['idnum']}</td>
-                            <td>{$row['fullname']}</td>
-                            <td class ='w3-center'>{$row['yearlevel']}</td>
-                            <td class ='w3-center'>{$row['collegecode']}</td>
-                            <td class='w3-right'>{$percent}%</td>
-                            </tr>\n";
+                    $result = mysqli_query($con,"SELECT * FROM listofcandidates WHERE candidatetype ='Governor' AND college ='{$_SESSION['college']}' AND candidateyear ='$currentyear';");
+                    if($result != FALSE)
+                    {
+                        if(mysqli_num_rows($result) != 0){
+                            while($row = mysqli_fetch_assoc($result))
+                            {
+                                $result2 = mysqli_query($con, "SELECT * FROM listofstudents WHERE college ='{$row['college']}';");
+                                $result3 = mysqli_query($con, "SELECT * FROM vote WHERE governor ='{$row['idnum']}';");
+                                $percent = (mysqli_num_rows($result3)/mysqli_num_rows($result2))*100.00;
+                                $percent = number_format($percent,2);
+                                echo "<tr>
+                                <td>{$row['idnum']}</td>
+                                <td>{$row['fullname']}</td>
+                                <td class ='w3-center'>{$row['yearlevel']}</td>
+                                <td class ='w3-center'>{$row['collegecode']}</td>
+                                <td class='w3-right'>{$percent}%</td>
+                                </tr>\n";
+                            }
+                        }else{
+                            echo "</table>$error";
                         }
                     }else{
-                        echo "</table>$error";
+                        echo "</table>Error Retrieving Candidate Data";
                     }
                 ?>
             </table>
             <br>
         </p>
+        
     </article>
     <article>
     <h2>Vice Governor</h2>
@@ -141,39 +165,41 @@
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th class='w3-center' style="min-width: 20px; max-width: 30px;">Name</th>
+                    <th class = 'w3-center' style="min-width: 20px; max-width: 30px;">Name</th>
                     <th>Year Level</th>
                     <th class='w3-center'>College</th>
                     <th class='w3-right'>Vote Count</th>
                 </tr>
             </thead>
-            <?php
-                $result = mysqli_query($con,"SELECT * FROM listofcandidates WHERE candidatetype ='Vice Governor' AND candidateyear ='$currentyear';");
-                if($result != true){
-                    while($row = mysqli_fetch_assoc($result))
-                    {
-                        $vicegovernor = $row['idnum'];
-                        $college = $row['college'];
-                        $result2 = mysqli_query($con, "SELECT * FROM listofstudents WHERE college ='$college';");
-                        $result3 = mysqli_query($con, "SELECT * FROM votedetails WHERE governor ='$vicegovernor';");
-                        $row2 = mysqli_num_rows($result2);
-                        $row3 = mysqli_num_rows($result3);
-                        $percent = $row3/$row2;
-                        echo "<tr>
-                        <td>{$row['idnum']}</td>
-                        <td>{$row['fullname']}</td>
-                        <td class ='w3-center'>{$row['yearlevel']}</td>
-                        <td class ='w3-center'>{$row['collegecode']}</td>
-                        <td class ='w3-right'>{$percent}%</td>
-                        </tr>\n";
-                    }
-                }else{
-                    echo "</table>$error";
+    <?php
+        $result = mysqli_query($con,"SELECT * FROM listofcandidates WHERE candidatetype ='Vice Governor' AND college ='{$_SESSION['college']}' AND candidateyear ='$currentyear';");
+        if($result != FALSE)
+        {
+            if(mysqli_num_rows($result) != 0){
+                while($row = mysqli_fetch_assoc($result))
+                {
+                    $result2 = mysqli_query($con, "SELECT * FROM listofstudents WHERE college ='{$row['college']}';");
+                    $result3 = mysqli_query($con, "SELECT * FROM vote WHERE vicegovernor ='{$row['idnum']}';");
+                    $percent = (mysqli_num_rows($result3)/mysqli_num_rows($result2))*100.00;
+                    $percent = number_format($percent,2);
+                    echo "<tr>
+                    <td>{$row['idnum']}</td>
+                    <td>{$row['fullname']}</td>
+                    <td class ='w3-center'>{$row['yearlevel']}</td>
+                    <td class ='w3-center'>{$row['collegecode']}</td>
+                    <td class='w3-right'>{$percent}%</td>
+                    </tr>\n";
                 }
-            ?>
-        </table>
-        <br>
-    </p>
+            }else{
+                echo "</table>$error";
+            }
+        }else{
+            echo "</table>Error Retrieving Candidate Data";
+        }
+    ?>
+</table>
+<br>
+</p>
 </article>
         </section>
     </body>
@@ -183,5 +209,5 @@
         <address>
             Contact: <a href="mailto:josepricardo%40su.edu.ph">Mail me</a>
 		</address>
-    </footer> 
+    </footer><?php mysqli_close($con); // Closing Connection?> 
 </html>

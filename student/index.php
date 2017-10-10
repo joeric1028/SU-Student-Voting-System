@@ -10,6 +10,17 @@
         $_SESSION['Error'] = "Please Login First!";
         header('location: ../admin');
     }
+    if(isset($_POST['logout_user']))
+    {
+        if(session_destroy()) // Destroying All Sessions
+        {
+            $error2 = "Successfully Logout! Please come back soon!";
+            header('Refresh: 1; URL=../');
+        }else{
+            $error2 = "Already Logout! Please come back soon!";
+            header('Refresh: 1; URL=../');
+        }
+    }
 ?>
 
 <!DOCTYPE html>
@@ -33,7 +44,8 @@
                 <?php
                     if(isset($_SESSION['login_admin_id']))echo "<li><a href='../candidate'>CANDIDATE</a></li>
                                                             <li><a href='../student'>STUDENT</a></li>
-                                                            <li><a href='../profile'>MY PROFILE</a></li>";
+                                                            <li><a href='../profile'>MY PROFILE</a></li>
+                                                            <li><a href='../register'>REGISTER</a></li>";
                     else if(isset($_SESSION['login_voter_id']))
                     {
                         echo '<li><a href="../vote">VOTE</a></li>
@@ -123,5 +135,5 @@
             Contact: <a href="mailto:josepricardo%40su.edu.ph">Mail me</a>
 		</address>
         </footer>
-    
+        <?php mysqli_close($con); // Closing Connection?> 
 </html>

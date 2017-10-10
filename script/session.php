@@ -8,6 +8,7 @@
         $ses_sql = mysqli_query($con,"SELECT * FROM listofstudents WHERE idnum='$user_check';");
         $row = mysqli_fetch_assoc($ses_sql);
         $_SESSION['login_admin_id'] = $row['idnum'];
+        $_SESSION['college'] = $row['college'];
         if(!isset($_SESSION['login_admin_id'])){
             unset($_SESSION['login_admin_id']);
             mysqli_close($con); // Closing Connection
@@ -21,6 +22,7 @@
         $ses_sql = mysqli_query($con,"SELECT * FROM listofstudents WHERE idnum='$user_check';");
         $row = mysqli_fetch_assoc($ses_sql);
         $_SESSION['login_voter_id'] = $row['idnum'];
+        $_SESSION['college'] = $row['college'];
         if(!isset($_SESSION['login_voter_id'])){
             unset($_SESSION['login_voter_id']);
             mysqli_close($con); // Closing Connection

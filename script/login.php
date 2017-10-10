@@ -20,7 +20,7 @@ if(isset($_POST['Submit']))
         if ($rows == 1) {
             $_SESSION['login_admin'] = $idnum; // Initializing Session
             $_SESSION['Error'] = "Successfully Login!";
-            header('Refresh: 2; URL=../profile'); // Redirecting To Other Page
+            header('Refresh: 1; URL=../'); // Redirecting To Other Page
         }else $_SESSION['Error'] = "ID Number or password is incorrect";
         mysqli_close($con); // Closing Connection
 }else if (isset($_POST['studentSubmit'])) 
@@ -45,17 +45,11 @@ if(isset($_POST['Submit']))
     {
         $_SESSION['login_voter'] = $idnum; // Initializing Session
         $_SESSION['Error'] = "Successfully Login!";
-        header("Refresh: 2; URL:../voterprofile"); // Redirecting To Other Page
+        header("Refresh: 1; URL:../voterprofile"); // Redirecting To Other Page
     }else{
         $_SESSION['Error'] = "ID Number or PIN is invalid";
     }
     mysqli_close($con); // Closing Connection
-    }
-}else{
-    if(isset($_SESSION['login_voter']) || isset($_SESSION['login_admin']))
-    {
-        $_SESSION['Error'] = "You're already logged in!";
-        header('Refresh: 2; URL=../');
     }
 }
 ?>

@@ -1,23 +1,31 @@
 <?php
     require '../script/session.php';
-    $error = "";
+    $error2 = "";
     
     if(isset($_POST['logout_user']))
     {
         if(session_destroy()) // Destroying All Sessions
         {
-            $error = "Successfully Logout! Please come back soon!";
+            $error2 = "Successfully Logout! Please come back soon!";
             header('Refresh: 1; URL=../');
         }else{
-            $error = "Already Logouadobet! Please come back soon!";
+            $error2 = "Already Logouadobet! Please come back soon!";
             header('Refresh: 1; URL=../');
         }
     }else{
-        if(!isset($_SESSION['login_admin_id']))
+        if(!isset($_SESSION['login_admin_id']) && !isset($_SESSION['login_voter_id']))
         {
             $_SESSION['Error'] = "Please Login First!";
             header('location: ../admin');
-        }    
+        }else if(isset($_SESSION['login_voter_id']) && !isset($_SESSION['login_admin_id']))
+        {
+            $_SESSION['Error3'] = "Not Allowed!";
+            header('location: ../');
+        }else if(!isset($_SESSION['login_admin_id']))
+        {
+            $_SESSION['Error'] = "Please Login First!";
+            header('location: ../admin');    
+        }
     }
 ?>
 <!DOCTYPE html>
@@ -42,12 +50,11 @@
                 <?php
                     if(isset($_SESSION['login_admin_id']))echo "<li><a href='../candidate'>CANDIDATE</a></li>
                                                             <li><a href='../student'>STUDENT</a></li>
-                                                            <li><a href='../profile'>MY PROFILE</a></li>";
-                    else if(isset($_SESSION['login_voter_id']))
-                    {
-                        echo '<li><a href="../vote">VOTE</a></li>
+                                                            <li><a href='../profile'>MY PROFILE</a></li>
+                                                            <li><a href='../register'>REGISTER</a></li>";
+                    else if(isset($_SESSION['login_voter_id']))echo '<li><a href="../vote">VOTE</a></li>
                             <li><a href="../voterprofile">MY PROFILE</a></li>';
-                    }else echo '<li><a href="../voter">VOTER</a></li>
+                    else echo '<li><a href="../voter">VOTER</a></li>
                             <li><a href="../admin">ADMIN</a></li>';
                 ?>
             </ul>
@@ -63,22 +70,14 @@
                 echo "Admin: ".$row['fullname'].'<form action="index.php" method="post">
                 <input type="submit" value="LOGOUT" class = "w3-button" name = "logout_user">
                 </form>'; 
-                if(empty($error2)){
-                }else{
-                    echo $error2;
-                }
+                if(!empty($error2))echo $error2;
             }else if(isset($_SESSION['login_voter_id']))
             {
                 echo "Voter: ".$row['fullname'].'<form action="index.php" method="post">
                 <input type="submit" value="LOGOUT" class = "w3-button" name = "logout_user">
                 </form>'; 
-                if(empty($error2)){
-                }else{
-                    echo $error2;
-                }
-            }else{
-                echo "Guest:";
-            }
+                if(!empty($error2))echo $error2;
+            }else echo "Guest:";
         ?>
         </b>
     </div>
@@ -94,9 +93,9 @@
                         <?php
                             if(empty($row['picture']))
                             {
-                                if($row['sex'] == "Male")echo '<img src="../img/avatarM.png" width="200" height="200" class="w3-circle">';
+                                if($row['sex'] == "Male")echo '<img src="../img/avatarM.png" width="200" height="200" class="w3-circle w3-card-2">';
                                 else echo '<img src="../img/avatarF.png" width="200" height="200" class="w3-circle">';
-                            }else echo '<img src="data:image/jpeg;base64,'.base64_encode( $row['picture'] ).' width="200" height="200" class="w3-circle">';
+                            }else echo '<img src="data:image/jpeg;base64,'.base64_encode( $row['picture'] ).'" width="200" height="200" class="w3-circle w3-card-2">';
                         ?>
                         <h2><?php echo $row['fullname'];?></h2>
                     </div>
@@ -145,5 +144,5 @@
 		</address>
         </footer>
     </body>
-
-    </html>
+    <?php mysqli_close($con); // Closing Connection?> 
+</html>

@@ -1,5 +1,23 @@
 <?php
-require '../script/login.php'; // Require Login Script
+    require '../script/login.php'; // Require Login Script
+    
+    if(!isset($_POST['studentSubmit']))
+    {
+
+    }
+    else if($_SESSION['Error'] == "Successfully Login!")
+    {
+        header("Refresh:1; URL=../");
+    }
+    else if(isset($_SESSION['login_voter']))
+    {
+        $_SESSION['Error'] = "Already Login!";
+        header("Refresh:1; URL=../");
+    }else if(isset($_SESSION['login_admin']))
+    {
+        $_SESSION['error3'] = "Not Allowed!";
+        header("location: ../");
+    }
 ?>
 
 <!DOCTYPE html>
@@ -47,9 +65,15 @@ require '../script/login.php'; // Require Login Script
                         <input class="w3-container w3-input w3-light-grey w3-border w3-padding" type="password" name="pin" placeholder="Enter PIN" required>
                         <br><br>
                         <?php
-                            if(isset($_SESSION['Error'])){
-                            echo "<label class = 'w3-container w3-text-red'>{$_SESSION['Error']}</label><br>";
-                            unset($_SESSION['Error']);
+                            if(isset($_SESSION['Error']))
+                            {
+                                echo "<label class = 'w3-container w3-text-red'>{$_SESSION['Error']}</label><br>";
+                                if(isset($_SESSION['Error']) == "Successfully Login!")
+                                {
+                                    unset($_SESSION['Error']);
+                                    header("Refresh:1;URL=../");
+                                }
+                                unset($_SESSION['Error']);
                             }else unset($_SESSION['Error']);
                         ?>
                         <input class="w3-container w3-button w3-round-xxlarge w3-blue" name="studentSubmit" type="submit" value="Submit">    
@@ -66,4 +90,5 @@ require '../script/login.php'; // Require Login Script
 		    </address>
         </footer>
     </body>
+    <?php mysqli_close($con); // Closing Connection?> 
 </html>

@@ -1,6 +1,10 @@
 <?php
 require '../script/login.php'; // Require Login Script
-
+if(isset($_SESSION['login_voter']))
+{
+    $_SESSION['error3'] = "Not Allowed";
+    header("location: ../");
+}
 ?>
 
 <!DOCTYPE html>
@@ -72,4 +76,5 @@ require '../script/login.php'; // Require Login Script
 		    </address>
         </footer>
     </body>
+    <?php mysqli_close($con); // Closing Connection?> 
 </html>

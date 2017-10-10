@@ -1,7 +1,6 @@
 <?php
     require '../script/session.php';
     $error = "";
-    
     if(isset($_POST['logout_user']))
     {
         if(session_destroy()) // Destroying All Sessions
@@ -17,7 +16,7 @@
         {
             $_SESSION['Error'] = "Please Login First!";
             header('location: ../voter');
-        }    
+        }
     }
 ?>
 <!DOCTYPE html>
@@ -94,9 +93,9 @@
                         <?php
                             if(empty($row['picture']))
                             {
-                                if($row['sex'] == "Male")echo '<img src="../img/avatarM.png" width="200" height="200" class="w3-circle">';
+                                if($row['sex'] == "Male")echo '<img src="../img/avatarM.png" width="200" height="200" class="w3-circle w3-card-2">';
                                 else echo '<img src="../img/avatarF.png" width="200" height="200" class="w3-circle">';
-                            }else echo '<img src="data:image/jpeg;base64,'.base64_encode( $row['picture'] ).' width="200" height="200" class="w3-circle">';
+                            }else echo '<img src="data:image/jpeg;base64,'.base64_encode( $row['picture'] ).'" width="200" height="200" class="w3-circle w3-card-2">';
                         ?>
                         <h2><?php echo $row['fullname'];?></h2>
                     </div>
@@ -145,5 +144,5 @@
 		</address>
         </footer>
     </body>
-
+    <?php mysqli_close($con); // Closing Connection?> 
     </html>
