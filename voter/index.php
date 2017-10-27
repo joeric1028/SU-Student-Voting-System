@@ -36,7 +36,7 @@
 
     <body>
         <header id = "pageContent">
-        <div id="logo"><a href="../"><img src="../img/vote_logo.png"></a>SU VOTING</div>
+        <div id="logo"><a href="../" style="text-decoration:none"><img src="../img/vote_logo.png">SU VOTING</a></div>
         <nav>
             <ul>
                 <?php
@@ -73,8 +73,7 @@
                                     unset($_SESSION['Error']);
                                     header("Refresh:1;URL=../");
                                 }
-                                unset($_SESSION['Error']);
-                            }else unset($_SESSION['Error']);
+                            }
                         ?>
                         <input class="w3-container w3-button w3-round-xxlarge w3-blue" name="studentSubmit" type="submit" value="Submit">    
                     </form>

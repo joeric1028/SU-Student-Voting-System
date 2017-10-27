@@ -44,12 +44,8 @@ if (isset($_POST['registerSubmit']))
     else if ($rows == 0) 
         {
             $error = "Registration Sucessful!";
-            mysqli_query($con,"INSERT INTO student (idnum, pin, firstname, middleinitial, lastname, course_idcourse, yearlevel, sex, )
+            mysqli_query($con,"INSERT INTO student (idnum, pin, firstname, middleinitial, lastname, course_idcourse, yearlevel, sex)
                                             VALUES ('$idnum','$pin' ,'$firstname', '$middleinitial', '$lastname', '$course', '$yearlevel', '$sex');");
-            $addvote = mysqli_query($con, "SELECT idstudent FROM student WHERE '$idnum';");
-            $addvote = mysqli_feth_assoc($addvote);
-            mysqli_query($con, "INSERT INTO vote (idvote) VALUES('{$addvote['idstudent']}');");
-            
             header("Refresh:1; URL=../"); // Redirecting To Other Page
         }
         mysqli_close($con); // Closing Connection

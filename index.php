@@ -39,7 +39,7 @@
     </head>
 
     <header id = "pageContent">
-        <div id="logo"><a href="../"><img src="../img/vote_logo.png"></a>SU VOTING</div>
+        <div id="logo"><a href="../" style="text-decoration:none"><img src="../img/vote_logo.png">SU VOTING</a></div>
             <nav>
                 <ul>
                     <?php
@@ -107,7 +107,7 @@
                             $result = mysqli_query($con, "SELECT name FROM college;");
                             while($row = mysqli_fetch_assoc($result))
                             {
-                                echo "<option id='".$row['name']."' value='{$row['name']}'>{$row['name']}</option>";
+                                echo "<option value='{$row['name']}'>{$row['name']}</option>";
                             }
                             echo "</select>"; 
                         } 
@@ -210,11 +210,4 @@
             Contact: <a href="mailto:josepricardo%40su.edu.ph">Mail me</a>
 		</address>
     </footer><?php mysqli_close($con); // Closing Connection?> 
-    <script>
-    document.getElementById('collegeselect').onclick = function() {
-        window.location.href = "index.php?college=1";
-    };
- 
-    
-</script>
 </html>

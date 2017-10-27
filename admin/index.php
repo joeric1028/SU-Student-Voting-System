@@ -23,7 +23,7 @@ if(isset($_SESSION['login_voter']))
 
     <body>
     <header id = "pageContent">
-    <div id="logo"><a href="../"><img src="../img/vote_logo.png"></a>SU VOTING</div>
+    <div id="logo"><a href="../" style="text-decoration:none"><img src="../img/vote_logo.png">SU VOTING</a></div>
         <nav>
             <ul>
                 <?php

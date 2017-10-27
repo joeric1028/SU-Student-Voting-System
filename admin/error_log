@@ -1,0 +1,3 @@
+[10-Oct-2017 15:55:36 UTC] PHP Warning:  mysqli_close(): Couldn't fetch mysqli in /home/joseric/public_html/beta/admin/index.php on line 79
+[11-Oct-2017 01:39:52 UTC] PHP Warning:  mysqli_close(): Couldn't fetch mysqli in /home/joseric/public_html/beta/admin/index.php on line 79
+[15-Oct-2017 07:05:57 UTC] PHP Warning:  mysqli_close(): Couldn't fetch mysqli in /home/joseric/public_html/beta/admin/index.php on line 79

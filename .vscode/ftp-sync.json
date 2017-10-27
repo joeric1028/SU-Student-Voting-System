@@ -1,6 +1,6 @@
 {
     "remotePath": "./public_html/beta",
-    "host": "ftp.susaems.heliohost.org",
+    "host": "suevo.heliohost.org",
     "username": "joseric",
     "password": "defaultricardo",
     "port": 21,
