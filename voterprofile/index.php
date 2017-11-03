@@ -145,4 +145,4 @@
         </footer>
     </body>
     <?php mysqli_close($con); // Closing Connection?> 
-    </html>
+</html>

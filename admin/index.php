@@ -1,10 +1,15 @@
 <?php
-require '../script/login.php'; // Require Login Script
-if(isset($_SESSION['login_voter']))
-{
-    $_SESSION['error3'] = "Not Allowed";
-    header("location: ../");
-}
+    if ($_SERVER['HTTPS'] != "on") {
+        $url = "https://". $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
+        header("Location: $url");
+        exit;
+    }
+    require '../script/login.php'; // Require Login Script
+    if(isset($_SESSION['login_voter']))
+    {
+        $_SESSION['error3'] = "Not Allowed";
+        header("location: ../");
+    }
 ?>
 
 <!DOCTYPE html>

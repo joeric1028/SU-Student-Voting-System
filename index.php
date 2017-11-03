@@ -1,6 +1,10 @@
 <?php
-    require 'script/session.php'; // Includes Login Script
-    $error = 'No Candidate Yet';
+    if ($_SERVER['HTTPS'] != "on") {
+        $url = "https://". $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
+        header("Location: $url");
+        exit;
+    }
+    require_once 'script/session.php'; // Includes Login Script
     $error2 = '';
     $currentyear = strftime("%Y");
     if(isset($_POST['logout_user']))
@@ -103,11 +107,11 @@
                         if(!empty($login_college))echo "($login_college)</h1>";
                         else
                         {
-                            echo "</h1><select class='w3-right'><option value=''>Select College</option>";
-                            $result = mysqli_query($con, "SELECT name FROM college;");
+                            echo "</h1><select class='w3-right' onchange='showCandidates(this.value)'><option value=''>Select College</option>";
+                            $result = mysqli_query($con, "SELECT * FROM college ORDER BY name;");
                             while($row = mysqli_fetch_assoc($result))
                             {
-                                echo "<option value='{$row['name']}'>{$row['name']}</option>";
+                                echo "<option value='{$row['idcollege']}'>{$row['name']}</option>";
                             }
                             echo "</select>"; 
                         } 
@@ -116,88 +120,96 @@
             </article>
             <article>
                 <h2>Governor</h2>
-                <p> 
-                    <table class="w3-table-all w3-hoverable">
+                <p>
+                <?php
+                    if(!empty($login_college))
+                    {
+                        echo'<table class="w3-table-all w3-hoverable">
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th class = 'w3-center' style="min-width: 20px; max-width: 30px;">Name</th>
+                                <th class = "w3-center" style="min-width: 20px; max-width: 30px;">Name</th>
                                 <th>Year Level</th>
-                                <th class='w3-center'>College</th>
-                                <th class='w3-right'>Vote Count</th>
+                                <th class="w3-center">College</th>
+                                <th class="w3-center">Vote Count</th>
                             </tr>
-                        </thead>
-                <?php
-                    $result = mysqli_query($con,"SELECT * FROM listofcandidates WHERE candidatetype ='Governor' AND college ='{$_SESSION['college']}' AND candidateyear ='$currentyear';");
-                    if($result != FALSE)
-                    {
-                        if(mysqli_num_rows($result) != 0){
-                            while($row = mysqli_fetch_assoc($result))
+                        </thead>';
+                        $result = mysqli_query($con,"SELECT * FROM listofcandidates WHERE candidatetype ='Governor' AND college ='{$_SESSION['college']}' AND candidateyear ='$currentyear';");
+                        if($result != FALSE)
+                        {
+                            if(mysqli_num_rows($result) != 0)
                             {
-                                $result2 = mysqli_query($con, "SELECT * FROM listofstudents WHERE college ='{$row['college']}';");
-                                $result3 = mysqli_query($con, "SELECT * FROM vote WHERE governor ='{$row['idnum']}';");
-                                $percent = (mysqli_num_rows($result3)/mysqli_num_rows($result2))*100.00;
-                                $percent = number_format($percent,2);
-                                echo "<tr>
-                                <td>{$row['idnum']}</td>
-                                <td>{$row['fullname']}</td>
-                                <td class ='w3-center'>{$row['yearlevel']}</td>
-                                <td class ='w3-center'>{$row['collegecode']}</td>
-                                <td class='w3-right'>{$percent}%</td>
-                                </tr>\n";
+                                while($row = mysqli_fetch_assoc($result))
+                                {
+                                    $result2 = mysqli_query($con, "SELECT * FROM listofstudents WHERE college ='{$row['college']}';");
+                                    $result3 = mysqli_query($con, "SELECT * FROM vote WHERE governor ='{$row['idnum']}';");
+                                    $percent = (mysqli_num_rows($result3)/mysqli_num_rows($result2))*100.00;
+                                    $percent = number_format($percent,2);
+                                    echo "<tr>
+                                    <td>{$row['idnum']}</td>
+                                    <td>{$row['fullname']}</td>
+                                    <td class ='w3-center'>{$row['yearlevel']}</td>
+                                    <td class ='w3-center'>{$row['collegecode']}</td>
+                                    <td class='w3-right'>{$percent}%</td>
+                                    </tr>\n";
+                                }
+                            }else{
+                                echo "</table>No Candidate Yet";
                             }
                         }else{
-                            echo "</table>$error";
+                            echo "</table>Error Retrieving Candidate Data";
                         }
                     }else{
-                        echo "</table>Error Retrieving Candidate Data";
+                        echo "<div id='getgovernor'><b class='w3-container'>Person info will be listed here...</b></div>";
                     }
                 ?>
-            </table>
             <br>
         </p>
-        
     </article>
     <article>
     <h2>Vice Governor</h2>
     <p>
-        <table class="w3-table-all w3-hoverable">
+    <?php
+        if(!empty($login_college))
+        {
+            echo'<table class="w3-table-all w3-hoverable">
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th class = 'w3-center' style="min-width: 20px; max-width: 30px;">Name</th>
+                    <th class = "w3-center" style="min-width: 20px; max-width: 30px;">Name</th>
                     <th>Year Level</th>
-                    <th class='w3-center'>College</th>
-                    <th class='w3-right'>Vote Count</th>
+                    <th class="w3-center">College</th>
+                    <th class="w3-center">Vote Count</th>
                 </tr>
-            </thead>
-    <?php
-        $result = mysqli_query($con,"SELECT * FROM listofcandidates WHERE candidatetype ='Vice Governor' AND college ='{$_SESSION['college']}' AND candidateyear ='$currentyear';");
-        if($result != FALSE)
-        {
-            if(mysqli_num_rows($result) != 0){
-                while($row = mysqli_fetch_assoc($result))
-                {
-                    $result2 = mysqli_query($con, "SELECT * FROM listofstudents WHERE college ='{$row['college']}';");
-                    $result3 = mysqli_query($con, "SELECT * FROM vote WHERE vicegovernor ='{$row['idnum']}';");
-                    $percent = (mysqli_num_rows($result3)/mysqli_num_rows($result2))*100.00;
-                    $percent = number_format($percent,2);
-                    echo "<tr>
-                    <td>{$row['idnum']}</td>
-                    <td>{$row['fullname']}</td>
-                    <td class ='w3-center'>{$row['yearlevel']}</td>
-                    <td class ='w3-center'>{$row['collegecode']}</td>
-                    <td class='w3-right'>{$percent}%</td>
-                    </tr>\n";
+            </thead>';
+            $result = mysqli_query($con,"SELECT * FROM listofcandidates WHERE candidatetype ='Vice Governor' AND college ='{$_SESSION['college']}' AND candidateyear ='$currentyear';");
+            if($result != FALSE)
+            {
+                if(mysqli_num_rows($result) != 0){
+                    while($row = mysqli_fetch_assoc($result))
+                    {
+                        $result2 = mysqli_query($con, "SELECT * FROM listofstudents WHERE college ='{$row['college']}';");
+                        $result3 = mysqli_query($con, "SELECT * FROM vote WHERE vicegovernor ='{$row['idnum']}';");
+                        $percent = (mysqli_num_rows($result3)/mysqli_num_rows($result2))*100.00;
+                        $percent = number_format($percent,2);
+                        echo "<tr>
+                        <td>{$row['idnum']}</td>
+                        <td>{$row['fullname']}</td>
+                        <td class ='w3-center'>{$row['yearlevel']}</td>
+                        <td class ='w3-center'>{$row['collegecode']}</td>
+                        <td class='w3-right'>{$percent}%</td>
+                        </tr>\n";
+                    }
+                }else{
+                    echo "</table>No Candidate Yet";
                 }
             }else{
-                echo "</table>$error";
+                echo "</table>Error Retrieving Candidate Data";
             }
         }else{
-            echo "</table>Error Retrieving Candidate Data";
+            echo "<div id='getvicegovernor'><b class='w3-container'>Person info will be listed here...</b></div>";
         }
     ?>
-</table>
 <br>
 </p>
 </article>
@@ -209,5 +221,60 @@
         <address>
             Contact: <a href="mailto:josepricardo%40su.edu.ph">Mail me</a>
 		</address>
-    </footer><?php mysqli_close($con); // Closing Connection?> 
+    </footer><?php mysqli_close($con); // Closing Connection?>
+    <script>
+        function showCandidates(str)
+        {
+            var xhttp;
+            if (str == "")
+            {
+                document.getElementById("getgovernor").innerHTML = "";
+                document.getElementById("getvicegovernor").innerHTML = "";
+                document.getElementById("getgovernor").innerHTML = "";
+                document.getElementById("getgovernor").innerHTML = "";
+                return;
+            }
+            xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function()
+            {
+                document.getElementById("getgovernor").innerHTML="";
+                document.getElementById("getgovernor").className="loader";
+                if (this.readyState == 4 && this.status == 200)
+                {
+                    document.getElementById("getgovernor").className="";
+                    document.getElementById("getgovernor").innerHTML=this.responseText;
+                }
+            };
+            xhttp.open("GET", "../script/getvotegovernor.php?q="+str, true);
+            xhttp.send();
+
+            xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function()
+            {
+                document.getElementById("getvicegovernor").innerHTML="";
+                document.getElementById("getvicegovernor").className="loader";
+                if (this.readyState == 4 && this.status == 200)
+                {
+                    document.getElementById("getvicegovernor").className="";
+                    document.getElementById("getvicegovernor").innerHTML=this.responseText;
+                }
+            };
+            xhttp.open("GET", "../script/getvotevicegovernor.php?q="+str, true);
+            xhttp.send();
+
+            xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function()
+            {
+                document.getElementById("get5yrmayor").innerHTML="";
+                document.getElementById("get5yrmayor").className="loader";
+                if (this.readyState == 4 && this.status == 200)
+                {
+                    document.getElementById("get5yrmayor").className="";
+                    document.getElementById("get5yrmayor").innerHTML=this.responseText;
+                }
+            };
+            xhttp.open("GET", "../script/getvote5yrmayor.php?q="+str, true);
+            xhttp.send();
+        }  
+    </script> 
 </html>

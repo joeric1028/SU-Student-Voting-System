@@ -1,4 +1,9 @@
 <?php
+    if ($_SERVER['HTTPS'] != "on") {
+        $url = "https://". $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
+        header("Location: $url");
+        exit;
+    }
     require '../script/login.php'; // Require Login Script
     
     if(!isset($_POST['studentSubmit']))
@@ -70,7 +75,6 @@
                                 echo "<label class = 'w3-container w3-text-red'>{$_SESSION['Error']}</label><br>";
                                 if(isset($_SESSION['Error']) == "Successfully Login!")
                                 {
-                                    unset($_SESSION['Error']);
                                     header("Refresh:1;URL=../");
                                 }
                             }

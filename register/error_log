@@ -1,6 +1,0 @@
-[11-Oct-2017 01:41:32 UTC] PHP Warning:  mysqli_query(): Couldn't fetch mysqli in /home/joseric/public_html/beta/register/index.php on line 80
-[11-Oct-2017 01:41:32 UTC] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, null given in /home/joseric/public_html/beta/register/index.php on line 81
-[11-Oct-2017 01:41:32 UTC] PHP Warning:  mysqli_close(): Couldn't fetch mysqli in /home/joseric/public_html/beta/register/index.php on line 117
-[15-Oct-2017 07:06:51 UTC] PHP Warning:  mysqli_query(): Couldn't fetch mysqli in /home/joseric/public_html/beta/register/index.php on line 80
-[15-Oct-2017 07:06:51 UTC] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, null given in /home/joseric/public_html/beta/register/index.php on line 81
-[15-Oct-2017 07:06:51 UTC] PHP Warning:  mysqli_close(): Couldn't fetch mysqli in /home/joseric/public_html/beta/register/index.php on line 117

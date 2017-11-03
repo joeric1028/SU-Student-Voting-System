@@ -1,23 +1,24 @@
 {
-    "remotePath": "./public_html/beta",
-    "host": "suevo.heliohost.org",
-    "username": "joseric",
-    "password": "defaultricardo",
+    "remotePath": "./",
+    "host": "ricky.heliohost.org",
+    "username": "beta@beta.suevo.heliohost.org",
+    "password": "wA;QwvygHh_y",
     "port": 21,
     "secure": false,
     "protocol": "ftp",
     "uploadOnSave": true,
-    "passive": false,
+    "passive": true,
     "debug": false,
     "privateKeyPath": null,
     "passphrase": null,
     "ignore": [
         "\\.vscode",
         "\\.git",
+        "\\.gitignore",
         "\\.DS_Store"
     ],
     "generatedFiles": {
-        "uploadOnSave": true,
+        "uploadOnSave": false,
         "extensionsToInclude": [],
         "path": ""
     }
