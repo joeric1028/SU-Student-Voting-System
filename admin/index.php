@@ -18,12 +18,13 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Voting Management System</title>
+        <title>SU VOTING</title>
         <link rel="shortcut icon" type="image/png" href="../img/vote_logo.png">
         <meta name="description" content="Home Page for Voting Management System.">
         <link href="../css/w3.css" rel="stylesheet" type="text/css">
         <link href="../css/style.css" rel="stylesheet" type="text/css">
         <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+        <script src='https://www.google.com/recaptcha/api.js'></script>
     </head>
 
     <body>
@@ -67,11 +68,13 @@
                             unset($_SESSION['Error']);
                             }else unset($_SESSION['Error']);
                         ?>
-                        <input class="w3-container w3-button w3-round-xxlarge w3-blue" name="Submit" type="submit" value="Submit">    
+                        <div class="g-recaptcha w3-container" data-sitekey="6Le7JzcUAAAAAAAwxxr1QX5XEGOcVVBV3fUfFzel"></div>
+                        <input class="w3-container w3-button w3-round-xxlarge w3-blue w3-padding" name="Submit" type="submit" value="Submit">    
                     </form>
+                    
                 <br>
                 </div>
-                <div class="w3-container w3-center w3-round-xxlarge w3-blue w3-padding-16"></div>
+                <div class="w3-display-container w3-center w3-round-xxlarge w3-blue w3-padding-16"></div>
                 <br>
         </section> 
         <footer>

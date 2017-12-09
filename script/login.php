@@ -15,7 +15,7 @@ if(isset($_POST['Submit']))
         $pin = mysqli_real_escape_string($con,$pin);
 
         // SQL query to fetch information of registerd users and finds user match.
-        $query = mysqli_query($con,"SELECT * FROM student WHERE pin='$pin' AND idnum='$idnum' AND admintype='Yes';");
+        $query = mysqli_query($con,"SELECT * FROM student WHERE pin='$pin' AND idnum='$idnum' AND (admintype='Admin' OR admintype='Polling Officer');");
         $rows = mysqli_num_rows($query);
         if ($rows == 1) {
             $_SESSION['login_admin'] = $idnum; // Initializing Session

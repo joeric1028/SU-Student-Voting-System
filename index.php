@@ -29,7 +29,6 @@
 <!DOCTYPE html>
 
 <html lang="en">
-
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -73,7 +72,7 @@
                             <input type="submit" value="LOGOUT" class = "w3-button" name = "logout_user">
                             </form>'; 
                             if(!empty($error2))echo $error2;
-                            if(isset($_SESSION['error3'])){
+                            if(isset($_SESSION['error3'])) {
                                 echo $_SESSION['error3'];
                             }else unset($_SESSION['error3']);
                             
@@ -99,10 +98,11 @@
                     </b>
                 </div>
             </strong>
+            <div id="time"></div>
         </section>
         <section>
             <article>
-                <h1>Candidates
+                <h1>Candidates</h1>
                     <?php
                         if(!empty($login_college))echo "($login_college)</h1>";
                         else
@@ -125,15 +125,15 @@
                     if(!empty($login_college))
                     {
                         echo'<table class="w3-table-all w3-hoverable">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th class = "w3-center" style="min-width: 20px; max-width: 30px;">Name</th>
-                                <th>Year Level</th>
-                                <th class="w3-center">College</th>
-                                <th class="w3-center">Vote Count</th>
-                            </tr>
-                        </thead>';
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th class = "w3-center" style="min-width: 20px; max-width: 30px;">Name</th>
+                                        <th>Year Level</th>
+                                        <th class="w3-center">College</th>
+                                        <th class="w3-center">Vote Count</th>
+                                    </tr>
+                                </thead>';
                         $result = mysqli_query($con,"SELECT * FROM listofcandidates WHERE candidatetype ='Governor' AND college ='{$_SESSION['college']}' AND candidateyear ='$currentyear';");
                         if($result != FALSE)
                         {
@@ -146,73 +146,63 @@
                                     $percent = (mysqli_num_rows($result3)/mysqli_num_rows($result2))*100.00;
                                     $percent = number_format($percent,2);
                                     echo "<tr>
-                                    <td>{$row['idnum']}</td>
-                                    <td>{$row['fullname']}</td>
-                                    <td class ='w3-center'>{$row['yearlevel']}</td>
-                                    <td class ='w3-center'>{$row['collegecode']}</td>
-                                    <td class='w3-right'>{$percent}%</td>
-                                    </tr>\n";
+                                            <td>{$row['idnum']}</td>
+                                            <td>{$row['fullname']}</td>
+                                            <td class ='w3-center'>{$row['yearlevel']}</td>
+                                            <td class ='w3-center'>{$row['collegecode']}</td>
+                                            <td class='w3-right'>{$percent}%</td>
+                                        </tr>\n";
                                 }
-                            }else{
-                                echo "</table>No Candidate Yet";
-                            }
-                        }else{
-                            echo "</table>Error Retrieving Candidate Data";
-                        }
-                    }else{
-                        echo "<div id='getgovernor'><b class='w3-container'>Person info will be listed here...</b></div>";
-                    }
+                                echo "</table>";
+                            } else echo "</table>No Candidate Yet";
+                        } else echo "</table>Error Retrieving Candidate Data";
+                    } else echo "<div id='getgovernor'><b class='w3-container'>Person info will be listed here...</b></div>";
                 ?>
             <br>
         </p>
     </article>
     <article>
-    <h2>Vice Governor</h2>
-    <p>
-    <?php
-        if(!empty($login_college))
-        {
-            echo'<table class="w3-table-all w3-hoverable">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th class = "w3-center" style="min-width: 20px; max-width: 30px;">Name</th>
-                    <th>Year Level</th>
-                    <th class="w3-center">College</th>
-                    <th class="w3-center">Vote Count</th>
-                </tr>
-            </thead>';
-            $result = mysqli_query($con,"SELECT * FROM listofcandidates WHERE candidatetype ='Vice Governor' AND college ='{$_SESSION['college']}' AND candidateyear ='$currentyear';");
-            if($result != FALSE)
-            {
-                if(mysqli_num_rows($result) != 0){
-                    while($row = mysqli_fetch_assoc($result))
+        <h2>Vice Governor</h2>
+        <p>
+            <?php
+                if(!empty($login_college))
+                {
+                    echo'<table class="w3-table-all w3-hoverable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th class = "w3-center" style="min-width: 20px; max-width: 30px;">Name</th>
+                                    <th>Year Level</th>
+                                    <th class="w3-center">College</th>
+                                    <th class="w3-center">Vote Count</th>
+                                </tr>
+                            </thead>';
+                    $result = mysqli_query($con,"SELECT * FROM listofcandidates WHERE candidatetype ='Vice Governor' AND college ='{$_SESSION['college']}' AND candidateyear ='$currentyear';");
+                    if($result != FALSE)
                     {
-                        $result2 = mysqli_query($con, "SELECT * FROM listofstudents WHERE college ='{$row['college']}';");
-                        $result3 = mysqli_query($con, "SELECT * FROM vote WHERE vicegovernor ='{$row['idnum']}';");
-                        $percent = (mysqli_num_rows($result3)/mysqli_num_rows($result2))*100.00;
-                        $percent = number_format($percent,2);
-                        echo "<tr>
-                        <td>{$row['idnum']}</td>
-                        <td>{$row['fullname']}</td>
-                        <td class ='w3-center'>{$row['yearlevel']}</td>
-                        <td class ='w3-center'>{$row['collegecode']}</td>
-                        <td class='w3-right'>{$percent}%</td>
-                        </tr>\n";
-                    }
-                }else{
-                    echo "</table>No Candidate Yet";
-                }
-            }else{
-                echo "</table>Error Retrieving Candidate Data";
-            }
-        }else{
-            echo "<div id='getvicegovernor'><b class='w3-container'>Person info will be listed here...</b></div>";
-        }
-    ?>
-<br>
-</p>
-</article>
+                        if(mysqli_num_rows($result) != 0) {
+                            while($row = mysqli_fetch_assoc($result))
+                            {
+                                $result2 = mysqli_query($con, "SELECT * FROM listofstudents WHERE college ='{$row['college']}';");
+                                $result3 = mysqli_query($con, "SELECT * FROM vote WHERE vicegovernor ='{$row['idnum']}';");
+                                $percent = (mysqli_num_rows($result3)/mysqli_num_rows($result2))*100.00;
+                                $percent = number_format($percent,2);
+                                echo "<tr>
+                                        <td>{$row['idnum']}</td>
+                                        <td>{$row['fullname']}</td>
+                                        <td class ='w3-center'>{$row['yearlevel']}</td>
+                                        <td class ='w3-center'>{$row['collegecode']}</td>
+                                        <td class='w3-right'>{$percent}%</td>
+                                    </tr>\n";
+                            }
+                            echo "</table>";
+                        } else echo "</table>No Candidate Yet";
+                    } else echo "</table>Error Retrieving Candidate Data";
+                } else echo "<div id='getvicegovernor'><b class='w3-container'>Person info will be listed here...</b></div>";
+            ?>
+            <br>
+        </p>
+    </article>
         </section>
     </body>
     
@@ -228,11 +218,12 @@
             var xhttp;
             if (str == "")
             {
-                document.getElementById("getgovernor").innerHTML = "";
-                document.getElementById("getvicegovernor").innerHTML = "";
-                document.getElementById("getgovernor").innerHTML = "";
-                document.getElementById("getgovernor").innerHTML = "";
+                document.getElementById("getgovernor").innerHTML = "<b class='w3-container'>Person info will be listed here...</b>";
+                document.getElementById("getvicegovernor").innerHTML = "<b class='w3-container'>Person info will be listed here...</b>";
+                document.getElementById("get5yrmayor").innerHTML = "<b class='w3-container'>Person info will be listed here...</b>";
+                document.getElementById("get5yrvicemayor").innerHTML = "<b class='w3-container'>Person info will be listed here...</b>";
                 return;
+                
             }
             xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function()
@@ -261,7 +252,7 @@
             };
             xhttp.open("GET", "../script/getvotevicegovernor.php?q="+str, true);
             xhttp.send();
-
+            
             xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function()
             {
@@ -275,6 +266,14 @@
             };
             xhttp.open("GET", "../script/getvote5yrmayor.php?q="+str, true);
             xhttp.send();
+        }
+        myTimer();
+        setInterval(myTimer, 1000);
+        
+        function myTimer()
+        {
+            var d = new Date();
+            document.getElementById("time").innerHTML = d.toLocaleTimeString();
         }  
     </script> 
 </html>

@@ -25,7 +25,7 @@
                         while($row = mysqli_fetch_array($result))
                         {
                             $result2 = mysqli_query($con, "SELECT * FROM listofstudents WHERE college ='{$row['college']}';");
-                            $result3 = mysqli_query($con, "SELECT * FROM vote WHERE governor ='{$row['idnum']}';");
+                            $result3 = mysqli_query($con, "SELECT * FROM vote WHERE vicegovernor ='{$row['idnum']}';");
                             $percent = (mysqli_num_rows($result3)/mysqli_num_rows($result2))*100.00;
                             $percent = number_format($percent,2);
                             echo "<tr>
