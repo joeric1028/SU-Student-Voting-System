@@ -1,35 +1,55 @@
 <?php
-session_start(); // Starting Session
-$err='';
-$error=''; // Variable To Store Error Message
-if (isset($_POST['submit'])) {
-if (empty($_POST['username']) || empty($_POST['password'])) {
-$error = "Username or Password is empty!";
-}
-else
+require_once 'database.php';
+
+session_start();
+
+if(isset($_POST['Submit'])) 
 {
-// Define $username and $password
-$username=$_POST['username'];
-$password=$_POST['password'];
-// Establishing Connection with Server by passing server_name, user_id and password as a parameter
-$connection = mysqli_connect("localhost", "root", "defaultricardo");
-// To protect MySQL injection for Security purpose
-$username = stripslashes($username);
-$password = stripslashes($password);
-$username = mysqli_real_escape_string($connection,$username);
-$password = mysqli_real_escape_string($connection,$password);
-// Selecting Database
-$db = mysqli_select_db($connection,"company");
-// SQL query to fetch information of registerd users and finds user match.
-$query = mysqli_query($connection,"select * from user where password='$password' AND username='$username'");
-$rows = mysqli_num_rows($query);
-if ($rows == 1) {
-$_SESSION['login_user']=$username; // Initializing Session
-header("location: profile.php"); // Redirecting To Other Page
-} else {
-$error = "Username or Password is invalid";
-}
-mysqli_close($connection); // Closing Connection
-}
+        $idnum = $_POST['idnum'];
+        $password = $_POST['password'];
+
+        // To protect MySQL injection for Security purpose
+        $idnum = stripslashes($idnum);
+        $password = stripslashes($password);
+        $idnum = mysqli_real_escape_string($con,$idnum);
+        $password = mysqli_real_escape_string($con,$password);
+
+        // SQL query to fetch information of registerd users and finds user match.
+        $query = mysqli_query($con,"SELECT * FROM student WHERE password='$password' AND idnum='$idnum' AND (admintype='Admin' OR admintype='Polling Officer');");
+        $rows = mysqli_num_rows($query);
+        if ($rows == 1) {
+            $_SESSION['login_admin'] = $idnum; // Initializing Session
+            $_SESSION['Error'] = "Successfully Login!";
+            header('Refresh: 1; URL=../'); // Redirecting To Other Page
+        }else $_SESSION['Error'] = "ID Number or password is incorrect";
+        mysqli_close($con); // Closing Connection
+}else if (isset($_POST['studentSubmit'])) 
+{
+    if (empty($_POST['idnum']) || empty($_POST['password']))
+    {
+        $error = "ID Number or Password is empty!";
+    }else{
+        $idnum=$_POST['idnum'];
+        $pin=$_POST['password'];
+
+        // To protect MySQL injection for Security purpose
+        $idnum = stripslashes($idnum);
+        $password = stripslashes($password);
+        $idnum = mysqli_real_escape_string($con,$idnum);
+        $password = mysqli_real_escape_string($con,$password);
+
+        // SQL query to fetch information of registerd users and finds user match.
+        $query = mysqli_query($con,"SELECT * FROM student WHERE password='$password' AND idnum='$idnum';");
+        $rows = mysqli_num_rows($query);
+    if ($rows == 1)
+    {
+        $_SESSION['login_voter'] = $idnum; // Initializing Session
+        $_SESSION['Error'] = "Successfully Login!";
+        header("Refresh: 1; URL:../voterprofile"); // Redirecting To Other Page
+    }else{
+        $_SESSION['Error'] = "ID Number or PIN is invalid";
+    }
+    mysqli_close($con); // Closing Connection
+    }
 }
 ?>
