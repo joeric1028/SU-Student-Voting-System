@@ -58,9 +58,9 @@
                 <div class = "w3-container">
                     <form class="w3-container" method="post" action="index.php">
                         <label class="w3-container w3-text-teal"><b>ID Number :</b></label>
-                        <input class="w3-container w3-input w3-light-grey w3-border w3-padding" type="text" name="idnum" placeholder="Enter ID Number" required>
-                        <label class="w3-container w3-text-teal"><b>PIN :</b></label>
-                        <input class="w3-container w3-input w3-light-grey w3-border w3-padding" type="password" name="pin" placeholder="Enter PIN" required>
+                        <input class="w3-container w3-input w3-light-grey w3-border w3-padding" type="text" name="idnum" placeholder="Enter your ID Number" required>
+                        <label class="w3-container w3-text-teal"><b>Password :</b></label>
+                        <input class="w3-container w3-input w3-light-grey w3-border w3-padding" type="password" name="password" placeholder="Enter your password" required>
                         <br><br>
                         <?php
                             if(isset($_SESSION['Error'])){
@@ -70,8 +70,7 @@
                         ?>
                         <div class="g-recaptcha w3-container" data-sitekey="6Le7JzcUAAAAAAAwxxr1QX5XEGOcVVBV3fUfFzel"></div>
                         <input class="w3-container w3-button w3-round-xxlarge w3-blue w3-padding" name="Submit" type="submit" value="Submit">    
-                    </form>
-                    
+                    </form>  
                 <br>
                 </div>
                 <div class="w3-display-container w3-center w3-round-xxlarge w3-blue w3-padding-16"></div>

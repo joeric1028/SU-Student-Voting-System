@@ -6,16 +6,16 @@ session_start();
 if(isset($_POST['Submit'])) 
 {
         $idnum = $_POST['idnum'];
-        $pin = $_POST['pin'];
+        $password = $_POST['password'];
 
         // To protect MySQL injection for Security purpose
         $idnum = stripslashes($idnum);
-        $pin = stripslashes($pin);
+        $password = stripslashes($password);
         $idnum = mysqli_real_escape_string($con,$idnum);
-        $pin = mysqli_real_escape_string($con,$pin);
+        $password = mysqli_real_escape_string($con,$password);
 
         // SQL query to fetch information of registerd users and finds user match.
-        $query = mysqli_query($con,"SELECT * FROM student WHERE pin='$pin' AND idnum='$idnum' AND (admintype='Admin' OR admintype='Polling Officer');");
+        $query = mysqli_query($con,"SELECT * FROM student WHERE password='$password' AND idnum='$idnum' AND (admintype='Admin' OR admintype='Polling Officer');");
         $rows = mysqli_num_rows($query);
         if ($rows == 1) {
             $_SESSION['login_admin'] = $idnum; // Initializing Session
@@ -25,21 +25,21 @@ if(isset($_POST['Submit']))
         mysqli_close($con); // Closing Connection
 }else if (isset($_POST['studentSubmit'])) 
 {
-    if (empty($_POST['idnum']) || empty($_POST['pin']))
+    if (empty($_POST['idnum']) || empty($_POST['password']))
     {
-        $error = "ID Number or PIN is empty!";
+        $error = "ID Number or Password is empty!";
     }else{
         $idnum=$_POST['idnum'];
-        $pin=$_POST['pin'];
+        $pin=$_POST['password'];
 
         // To protect MySQL injection for Security purpose
         $idnum = stripslashes($idnum);
-        $pin = stripslashes($pin);
+        $password = stripslashes($password);
         $idnum = mysqli_real_escape_string($con,$idnum);
-        $pin = mysqli_real_escape_string($con,$pin);
+        $password = mysqli_real_escape_string($con,$password);
 
         // SQL query to fetch information of registerd users and finds user match.
-        $query = mysqli_query($con,"SELECT * FROM student WHERE pin='$pin' AND idnum='$idnum';");
+        $query = mysqli_query($con,"SELECT * FROM student WHERE password='$password' AND idnum='$idnum';");
         $rows = mysqli_num_rows($query);
     if ($rows == 1)
     {

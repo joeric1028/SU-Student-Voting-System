@@ -57,8 +57,8 @@ if(!isset($_SESSION['login_admin_id']))
                             <input class="w3-right" name="idnum" type="text" placeholder="Enter ID (XX-X-XXXXX)" required>
                         </div>
                         <div class="w3-container w3-margin">
-                            <label class="w3-left">PIN :</label>
-                            <input class="w3-right" name="pin" type="password" placeholder="Enter PIN (MAX = 6 digits)" required>
+                            <label class="w3-left">Password :</label>
+                            <input class="w3-right" name="password" type="password" placeholder="Enter your Password" required>
                         </div>
                         <div class="w3-container w3-margin">
                             <label class="w3-left">First Name :</label>

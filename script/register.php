@@ -6,7 +6,7 @@ $error ='';
 if (isset($_POST['registerSubmit'])) 
 {
     $idnum=$_POST['idnum'];
-    $pin=$_POST['pin'];
+    $pin=$_POST['password'];
     $firstname=$_POST['firstname'];
     $middleinitial=$_POST['middleinitial'];
     $lastname=$_POST['lastname'];
@@ -16,7 +16,7 @@ if (isset($_POST['registerSubmit']))
 
     // To protect MySQL injection for Security purpose
     $idnum = stripslashes($idnum);
-    $pin = stripslashes($pin);
+    $password = stripslashes($password);
     $firstname = stripslashes($firstname);
     $middleinitial = stripslashes($middleinitial);
     $lastname = stripslashes($lastname);
@@ -25,7 +25,7 @@ if (isset($_POST['registerSubmit']))
     $sex = stripslashes($sex);
 
     $idnum = mysqli_real_escape_string($con, $idnum);
-    $pin = mysqli_real_escape_string($con, $pin);
+    $password = mysqli_real_escape_string($con, $password);
     $firstname = mysqli_real_escape_string($con, $firstname);
     $middleinitial = mysqli_real_escape_string($con, $middleinitial);
     $lastname = mysqli_real_escape_string($con, $lastname);
@@ -44,8 +44,8 @@ if (isset($_POST['registerSubmit']))
     else if ($rows == 0) 
         {
             $error = "Registration Sucessful!";
-            mysqli_query($con,"INSERT INTO student (idnum, pin, firstname, middleinitial, lastname, course_idcourse, yearlevel, sex)
-                                            VALUES ('$idnum','$pin' ,'$firstname', '$middleinitial', '$lastname', '$course', '$yearlevel', '$sex');");
+            mysqli_query($con,"INSERT INTO student (idnum, password, firstname, middleinitial, lastname, course_idcourse, yearlevel, sex)
+                                            VALUES ('$idnum','$password' ,'$firstname', '$middleinitial', '$lastname', '$course', '$yearlevel', '$sex');");
             header("Refresh:1; URL=../"); // Redirecting To Other Page
         }
         mysqli_close($con); // Closing Connection

@@ -29,7 +29,7 @@
     }
 ?>
 <!DOCTYPE html>
-    <html lang="en">
+<html lang="en">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -59,11 +59,11 @@
                 ?>
             </ul>
         </nav>
-</header>
-<section>
-<strong>
-    <div id="profile">
-        <b id="welcome">Welcome
+    </header>
+    <section>
+        <strong>
+            <div id="profile">
+            <b id="welcome">Welcome
         <?php 
             if(isset($_SESSION['login_admin_id']))
             {
@@ -93,9 +93,9 @@
                         <?php
                             if(empty($row['picture']))
                             {
-                                if($row['sex'] == "Male")echo '<img src="../img/avatarM.png" width="200" height="200" class="w3-circle w3-card-2">';
-                                else echo '<img src="../img/avatarF.png" width="200" height="200" class="w3-circle">';
-                            }else echo '<img src="data:image/jpeg;base64,'.base64_encode( $row['picture'] ).'" width="200" height="200" class="w3-circle w3-card-2">';
+                                if($row['sex'] == "Male")echo '<img src="../img/avatarM.png" width="250" height="250" class="w3-circle w3-card-2">';
+                                else echo '<img src="../img/avatarF.png" width="250" height="250" class="w3-circle">';
+                            }else echo '<img src="data:image/jpeg;base64,'.base64_encode( $row['picture'] ).'" width="250" height="250" class="w3-circle w3-card-2">';
                         ?>
                         <h2><?php echo $row['fullname'];?></h2>
                     </div>
@@ -125,16 +125,7 @@
                         </div>
                         <br>
                     </p>
-                </article>
-                <article>
-                    <h2></h2>
-                    <p></p>
-                </article>
-                <article>
-                    <h2></h2>
-                    <p>
-                    </p>
-                </article>
+                    </article>
             </main>
         </section>
         <footer>
