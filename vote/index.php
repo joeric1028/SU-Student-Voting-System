@@ -13,14 +13,14 @@ if(isset($_POST['logout_user']))
         header('Refresh: 1; URL=../');
     }
 }else{
-    
+
     if(!isset($_SESSION['login_voter_id']))
     {
         $_SESSION['Error'] = "Please Login First!";
         header('location: ../voter');
     }
-    $result1 = mysqli_query($con,"SELECT * FROM student INNER JOIN vote ON idstudent = idvote WHERE voted ='No' AND idnum='{$_SESSION['login_voter_id']}';");
-    if(mysqli_num_rows($result1) != 1) 
+    $result1 = mysqli_query($con,"SELECT * FROM user INNER JOIN vote ON iduser = idvote WHERE voted ='No' AND idnum='{$_SESSION['login_voter_id']}';");
+    if(mysqli_num_rows($result1) != 1)
     {
         $_SESSION['error3'] ="Already voted!";
     }
@@ -28,7 +28,7 @@ if(isset($_POST['logout_user']))
     {
         $_SESSION['error3'] = "Not Allowed!";
         header('location: ../?');
-    } 
+    }
 }
 ?>
 
@@ -46,7 +46,7 @@ if(isset($_POST['logout_user']))
         <link href="../css/style.css" rel="stylesheet" type="text/css">
         <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
     </head>
-    <body>  
+    <body>
     <header id = "pageContent">
     <div id="logo"><a href="../" style="text-decoration:none"><img src="../img/vote_logo.png">SU VOTING</a></div>
         <nav>
@@ -69,12 +69,12 @@ if(isset($_POST['logout_user']))
             <strong>
                 <div id="profile">
                     <b id="welcome">Welcome
-                    <?php 
+                    <?php
                         if(isset($_SESSION['login_admin_id']))
                         {
-                            echo "Admin: ".$row['fullname'].'<form action="index.php" method="post">
+                            echo "Admin: ".$row['firstname'].' '.$row['middleinitial'].' '.$row['lastname'].'<form action="index.php" method="post">
                             <input type="submit" value="LOGOUT" class = "w3-button" name = "logout_user">
-                            </form>'; 
+                            </form>';
                             if(!empty($error2))echo $error2;
                             if(isset($_SESSION['error3'])){
                                 echo $_SESSION['error3'];
@@ -82,9 +82,9 @@ if(isset($_POST['logout_user']))
                             }else unset($_SESSION['error3']);
                         }else if(isset($_SESSION['login_voter_id']))
                         {
-                            echo "Voter: ".$row['fullname'].'<form action="index.php" method="post">
+                            echo "Voter: ".$row['firstname'].' '.$row['middleinitial'].' '.$row['lastname'].'<form action="index.php" method="post">
                             <input type="submit" value="LOGOUT" class = "w3-button" name = "logout_user">
-                            </form>'; 
+                            </form>';
                             if(!empty($error2))echo $error2;
                             if(isset($_SESSION['error3'])){
                                 echo $_SESSION['error3'];
@@ -105,7 +105,7 @@ if(isset($_POST['logout_user']))
                                 <div class="w3-container w3-center w3-padding-16">
                                     <?php
                                         $result1 = mysqli_query($con,"SELECT * FROM student INNER JOIN vote ON idstudent = idvote WHERE voted ='No' AND idnum='{$_SESSION['login_voter_id']}';");
-                                        if(mysqli_num_rows($result1) == 1) 
+                                        if(mysqli_num_rows($result1) == 1)
                                         {
                                             $row1 = mysqli_fetch_assoc($result1);
                                             $_SESSION['voterid'] = $row1['idstudent'];
@@ -170,5 +170,5 @@ if(isset($_POST['logout_user']))
             Contact: <a href="mailto:josepricardo%40su.edu.ph">Mail me</a>
 		</address>
         </footer>
-        <?php mysqli_close($con); // Closing Connection?> 
+        <?php mysqli_close($con); // Closing Connection?>
 </html>

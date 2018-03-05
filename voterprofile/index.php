@@ -28,7 +28,7 @@
         <link rel="canonical" href="http://html5-templates.com/" />
         <title>SU VOTING</title>
         <meta name="description" content="Home Page for Voting Management System.">
-        <link rel="stylesheet" href="../css/w3.css"> 
+        <link rel="stylesheet" href="../css/w3.css">
         <link href="../css/style.css" rel="stylesheet" type="text/css">
         <link rel="icon" href="../img/vote_logo.png">
         <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
@@ -56,21 +56,21 @@
 <strong>
     <div id="profile">
         <b id="welcome">Welcome
-        <?php 
+        <?php
             if(isset($_SESSION['login_admin_id']))
             {
-                echo "Admin: ".$row['fullname'].'<form action="index.php" method="post">
+                echo "Admin: ".$row['firstname'].' '.$row['middleinitial'].' '.$row['lastname'].'<form action="index.php" method="post">
                 <input type="submit" value="LOGOUT" class = "w3-button" name = "logout_user">
-                </form>'; 
+                </form>';
                 if(empty($error2)){
                 }else{
                     echo $error2;
                 }
             }else if(isset($_SESSION['login_voter_id']))
             {
-                echo "Voter: ".$row['fullname'].'<form action="index.php" method="post">
+                echo "Voter: ".$row['firstname'].' '.$row['middleinitial'].' '.$row['lastname'].'<form action="index.php" method="post">
                 <input type="submit" value="LOGOUT" class = "w3-button" name = "logout_user">
-                </form>'; 
+                </form>';
                 if(empty($error2)){
                 }else{
                     echo $error2;
@@ -86,7 +86,7 @@
         <section id="pageContent">
             <main role="main">
                 <article>
-                    <h1>My Voter Profile</h1>  
+                    <h1>My Voter Profile</h1>
                 </article>
                 <article>
                     <div class="w3-container w3-center">
@@ -144,5 +144,5 @@
 		</address>
         </footer>
     </body>
-    <?php mysqli_close($con); // Closing Connection?> 
+    <?php mysqli_close($con); // Closing Connection?>
 </html>

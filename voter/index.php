@@ -1,25 +1,24 @@
 <?php
-    if ($_SERVER['HTTPS'] != "on") {
-        $url = "https://". $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
-        header("Location: $url");
-        exit;
-    }
+    // if ($_SERVER['HTTPS'] != "on") {
+    //     $url = "https://". $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
+    //     header("Location: $url");
+    //     exit;
+    // }
     require '../script/login.php'; // Require Login Script
-    
-    if(!isset($_POST['studentSubmit']))
-    {
+
+    if(!isset($_POST['studentSubmit'])) {
 
     }
-    else if($_SESSION['Error'] == "Successfully Login!")
-    {
-        header("Refresh:1; URL=../");
+    if (isset($_SESSION['Error'])) {
+        if($_SESSION['Error'] == "Successfully Login!") {
+            header("Refresh:1; URL=../");
+        }
     }
-    else if(isset($_SESSION['login_voter']))
-    {
+    if(isset($_SESSION['login_voter'])) {
         $_SESSION['Error'] = "Already Login!";
         header("Refresh:1; URL=../");
-    }else if(isset($_SESSION['login_admin']))
-    {
+    }
+    if(isset($_SESSION['login_admin'])) {
         $_SESSION['error3'] = "Not Allowed!";
         header("location: ../");
     }
@@ -58,9 +57,9 @@
             </strong>
         </section>
         <section id="pageContentCenter">
-            
+
                 <div class="w3-container w3-center w3-round-xxlarge w3-blue w3-padding-16">
-                    <h2>Vote Login</h2>
+                    <h2>Voter Login</h2>
                 </div>
                 <div class = "w3-container">
                     <form class="w3-container" method="post" action="index.php">
@@ -70,28 +69,28 @@
                         <input class="w3-container w3-input w3-light-grey w3-border w3-padding" type="password" name="pin" placeholder="Enter PIN" required>
                         <br><br>
                         <?php
-                            if(isset($_SESSION['Error']))
-                            {
+                            if (isset($_SESSION['Error'])){
                                 echo "<label class = 'w3-container w3-text-red'>{$_SESSION['Error']}</label><br>";
-                                if(isset($_SESSION['Error']) == "Successfully Login!")
+                                if($_SESSION['Error'] == "Successfully Login!")
                                 {
                                     header("Refresh:1;URL=../");
                                 }
-                            }
+                                unset($_SESSION['Error']);
+                            } else unset($_SESSION['Error']);
                         ?>
-                        <input class="w3-container w3-button w3-round-xxlarge w3-blue" name="studentSubmit" type="submit" value="Submit">    
+                        <input class="w3-container w3-button w3-round-xxlarge w3-blue" name="studentSubmit" type="submit" value="Submit">
                     </form>
                 <br>
                 </div>
                 <div class="w3-container w3-center w3-round-xxlarge w3-blue w3-padding-16"></div>
                 <br>
-        </section> 
+        </section>
         <footer>
             <p>&copy; 2017 | <a href="http://html5-templates.com/" target="_blank" rel="nofollow">HTML5 Templates</a></p>
             <address>
-                Contact: <a href="mailto:josepricardo%40su.edu.ph">Mail me</a> 
+                Contact: <a href="mailto:josepricardo%40su.edu.ph">Mail Me</a>
 		    </address>
         </footer>
     </body>
-    <?php mysqli_close($con); // Closing Connection?> 
+    <?php mysqli_close($con); // Closing Connection?>
 </html>

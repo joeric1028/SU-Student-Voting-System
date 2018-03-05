@@ -21,6 +21,7 @@
         }
     }
     $error = 'No Candidate Yet';
+    $currentyear = strftime("%Y");
 ?>
 
 <!DOCTYPE html>
@@ -37,7 +38,7 @@
         <link href="../css/style.css" rel="stylesheet" type="text/css">
         <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
     </head>
-    <body>  
+    <body>
     <header id = "pageContent">
     <div id="logo"><a href="../" style="text-decoration:none"><img src="../img/vote_logo.png">SU VOTING</a></div>
         <nav>
@@ -61,21 +62,21 @@
 <strong>
     <div id="profile">
         <b id="welcome">Welcome
-        <?php 
+        <?php
             if(isset($_SESSION['login_admin_id']))
             {
-                echo "Admin: ".$row['fullname'].'<form action="index.php" method="post">
+                echo "Admin: ".$row['firstname'].' '.$row['middleinitial'].' '.$row['lastname'].'<form action="index.php" method="post">
                 <input type="submit" value="LOGOUT" class = "w3-button" name = "logout_user">
-                </form>'; 
+                </form>';
                 if(empty($error2)){
                 }else{
                     echo $error2;
                 }
             }else if(isset($_SESSION['login_voter_id']))
             {
-                echo "Voter: ".$row['fullname'].'<form action="index.php" method="post">
+                echo "Voter: ".$row['firstname'].' '.$row['middleinitial'].' '.$row['lastname'].'<form action="index.php" method="post">
                 <input type="submit" value="LOGOUT" class = "w3-button" name = "logout_user">
-                </form>'; 
+                </form>';
                 if(empty($error2)){
                 }else{
                     echo $error2;
@@ -91,7 +92,7 @@
         <section id="pageContent">
             <main role="main">
                 <article>
-                    <h1>Candidates</h1>  
+                    <h1>Candidates</h1>
                 </article>
                 <article>
                     <h2>Governor</h2>
@@ -99,6 +100,7 @@
                         <table class="w3-table-all w3-hoverable">
                             <thead>
                                 <tr>
+                                    <th>Photo</th>
                                     <th>ID</th>
                                     <th>Name</th>
                                     <th>Year Level</th>
@@ -106,13 +108,14 @@
                                 </tr>
                             </thead>
                             <?php
-                                $result = mysqli_query($con,"SELECT * FROM listofcandidates WHERE candidatetype ='Governor';");
+                                $result = mysqli_query($con,"SELECT * FROM user INNER JOIN course ON course_idcourse = idcourse INNER JOIN college ON college_idcollege = idcollege WHERE candidatetype ='Governor' AND candidateyear = '$currentyear';");
                                 if(mysqli_num_rows($result) != 0){
                                     while($row = mysqli_fetch_assoc($result))
                                     {
                                         echo "<tr>
+                                        <td>{$row['picture']}</td>
                                         <td>{$row['idnum']}</td>
-                                        <td>{$row['fullname']}</td>
+                                        <td>{$row['firstname']} {$row['middleinitial']} {$row['lastname']}</td>
                                         <td>{$row['yearlevel']}</td>
                                         <td>{$row['collegecode']}</td>
                                         </tr>\n";
@@ -138,13 +141,13 @@
                                 </tr>
                             </thead>
                             <?php
-                                $result = mysqli_query($con,"SELECT * FROM listofcandidates WHERE candidatetype ='hello';");
+                                $result = mysqli_query($con,"SELECT * FROM user INNER JOIN course ON course_idcourse = idcourse INNER JOIN college ON college_idcollege = idcollege WHERE candidatetype ='Vice Governor' AND candidateyear = '$currentyear';");
                                 if(mysqli_num_rows($result) != 0){
                                     while($row = mysqli_fetch_assoc($result))
                                     {
                                         echo "<tr>
                                         <td>{$row['idnum']}</td>
-                                        <td>{$row['fullname']}</td>
+                                        <td>{$row['firstname']} {$row['middleinitial']} {$row['lastname']}</td>
                                         <td>{$row['yearlevel']}</td>
                                         <td>{$row['collegecode']}</td>
                                         </tr>\n";
@@ -157,14 +160,626 @@
                         <br>
                     </p>
                 </article>
-
+                <article>
+                    <h2>Secretary</h2>
+                    <p>
+                        <table class="w3-table-all w3-hoverable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Year Level</th>
+                                    <th>College</th>
+                                </tr>
+                            </thead>
+                            <?php
+                                $result = mysqli_query($con,"SELECT * FROM user INNER JOIN course ON course_idcourse = idcourse INNER JOIN college ON college_idcollege = idcollege WHERE candidatetype ='Secretary' AND candidateyear = '$currentyear';");
+                                if(mysqli_num_rows($result) != 0){
+                                    while($row = mysqli_fetch_assoc($result))
+                                    {
+                                        echo "<tr>
+                                        <td>{$row['idnum']}</td>
+                                        <td>{$row['firstname']} {$row['middleinitial']} {$row['lastname']}</td>
+                                        <td>{$row['yearlevel']}</td>
+                                        <td>{$row['collegecode']}</td>
+                                        </tr>\n";
+                                    }
+                                }else{
+                                    echo "</table>$error";
+                                }
+                            ?>
+                        </table>
+                        <br>
+                    </p>
+                </article>
+                <article>
+                    <h2>Assistant Secretary</h2>
+                    <p>
+                        <table class="w3-table-all w3-hoverable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Year Level</th>
+                                    <th>College</th>
+                                </tr>
+                            </thead>
+                            <?php
+                                $result = mysqli_query($con,"SELECT * FROM user INNER JOIN course ON course_idcourse = idcourse INNER JOIN college ON college_idcollege = idcollege WHERE candidatetype ='Assistant Secretary' AND candidateyear = '$currentyear';");
+                                if(mysqli_num_rows($result) != 0){
+                                    while($row = mysqli_fetch_assoc($result))
+                                    {
+                                        echo "<tr>
+                                        <td>{$row['idnum']}</td>
+                                        <td>{$row['firstname']} {$row['middleinitial']} {$row['lastname']}</td>
+                                        <td>{$row['yearlevel']}</td>
+                                        <td>{$row['collegecode']}</td>
+                                        </tr>\n";
+                                    }
+                                }else{
+                                    echo "</table>$error";
+                                }
+                            ?>
+                        </table>
+                        <br>
+                    </p>
+                </article>
+                <article>
+                    <h2>Treasurer</h2>
+                    <p>
+                        <table class="w3-table-all w3-hoverable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Year Level</th>
+                                    <th>College</th>
+                                </tr>
+                            </thead>
+                            <?php
+                                $result = mysqli_query($con,"SELECT * FROM user INNER JOIN course ON course_idcourse = idcourse INNER JOIN college ON college_idcollege = idcollege WHERE candidatetype ='Treasurer' AND candidateyear = '$currentyear';");
+                                if(mysqli_num_rows($result) != 0){
+                                    while($row = mysqli_fetch_assoc($result))
+                                    {
+                                        echo "<tr>
+                                        <td>{$row['idnum']}</td>
+                                        <td>{$row['firstname']} {$row['middleinitial']} {$row['lastname']}</td>
+                                        <td>{$row['yearlevel']}</td>
+                                        <td>{$row['collegecode']}</td>
+                                        </tr>\n";
+                                    }
+                                }else{
+                                    echo "</table>$error";
+                                }
+                            ?>
+                        </table>
+                        <br>
+                    </p>
+                </article>
+                <article>
+                    <h2>Auditor</h2>
+                    <p>
+                        <table class="w3-table-all w3-hoverable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Year Level</th>
+                                    <th>College</th>
+                                </tr>
+                            </thead>
+                            <?php
+                                $result = mysqli_query($con,"SELECT * FROM user INNER JOIN course ON course_idcourse = idcourse INNER JOIN college ON college_idcollege = idcollege WHERE candidatetype ='Auditor' AND candidateyear = '$currentyear';");
+                                if(mysqli_num_rows($result) != 0){
+                                    while($row = mysqli_fetch_assoc($result))
+                                    {
+                                        echo "<tr>
+                                        <td>{$row['idnum']}</td>
+                                        <td>{$row['firstname']} {$row['middleinitial']} {$row['lastname']}</td>
+                                        <td>{$row['yearlevel']}</td>
+                                        <td>{$row['collegecode']}</td>
+                                        </tr>\n";
+                                    }
+                                }else{
+                                    echo "</table>$error";
+                                }
+                            ?>
+                        </table>
+                        <br>
+                    </p>
+                </article>
+                <article>
+                    <h2>5th Year Mayor</h2>
+                    <p>
+                        <table class="w3-table-all w3-hoverable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Year Level</th>
+                                    <th>College</th>
+                                </tr>
+                            </thead>
+                            <?php
+                                $result = mysqli_query($con,"SELECT * FROM user INNER JOIN course ON course_idcourse = idcourse INNER JOIN college ON college_idcollege = idcollege WHERE candidatetype ='5Yr Mayor' AND candidateyear = '$currentyear';");
+                                if(mysqli_num_rows($result) != 0){
+                                    while($row = mysqli_fetch_assoc($result))
+                                    {
+                                        echo "<tr>
+                                        <td>{$row['idnum']}</td>
+                                        <td>{$row['firstname']} {$row['middleinitial']} {$row['lastname']}</td>
+                                        <td>{$row['yearlevel']}</td>
+                                        <td>{$row['collegecode']}</td>
+                                        </tr>\n";
+                                    }
+                                }else{
+                                    echo "</table>$error";
+                                }
+                            ?>
+                        </table>
+                        <br>
+                    </p>
+                </article>
+                <article>
+                    <h2>5th Year Vice Mayor</h2>
+                    <p>
+                        <table class="w3-table-all w3-hoverable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Year Level</th>
+                                    <th>College</th>
+                                </tr>
+                            </thead>
+                            <?php
+                                $result = mysqli_query($con,"SELECT * FROM user INNER JOIN course ON course_idcourse = idcourse INNER JOIN college ON college_idcollege = idcollege WHERE candidatetype ='5Yr Vice Mayor' AND candidateyear = '$currentyear';");
+                                if(mysqli_num_rows($result) != 0){
+                                    while($row = mysqli_fetch_assoc($result))
+                                    {
+                                        echo "<tr>
+                                        <td>{$row['idnum']}</td>
+                                        <td>{$row['firstname']} {$row['middleinitial']} {$row['lastname']}</td>
+                                        <td>{$row['yearlevel']}</td>
+                                        <td>{$row['collegecode']}</td>
+                                        </tr>\n";
+                                    }
+                                }else{
+                                    echo "</table>$error";
+                                }
+                            ?>
+                        </table>
+                        <br>
+                    </p>
+                </article>
+                <article>
+                    <h2>4th Year Mayor</h2>
+                    <p>
+                        <table class="w3-table-all w3-hoverable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Year Level</th>
+                                    <th>College</th>
+                                </tr>
+                            </thead>
+                            <?php
+                                $result = mysqli_query($con,"SELECT * FROM user INNER JOIN course ON course_idcourse = idcourse INNER JOIN college ON college_idcollege = idcollege WHERE candidatetype ='4Yr Mayor' AND candidateyear = '$currentyear';");
+                                if(mysqli_num_rows($result) != 0){
+                                    while($row = mysqli_fetch_assoc($result))
+                                    {
+                                        echo "<tr>
+                                        <td>{$row['idnum']}</td>
+                                        <td>{$row['firstname']} {$row['middleinitial']} {$row['lastname']}</td>
+                                        <td>{$row['yearlevel']}</td>
+                                        <td>{$row['collegecode']}</td>
+                                        </tr>\n";
+                                    }
+                                }else{
+                                    echo "</table>$error";
+                                }
+                            ?>
+                        </table>
+                        <br>
+                    </p>
+                </article>
+                <article>
+                    <h2>4th Year Vice Mayor</h2>
+                    <p>
+                        <table class="w3-table-all w3-hoverable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Year Level</th>
+                                    <th>College</th>
+                                </tr>
+                            </thead>
+                            <?php
+                                $result = mysqli_query($con,"SELECT * FROM user INNER JOIN course ON course_idcourse = idcourse INNER JOIN college ON college_idcollege = idcollege WHERE candidatetype ='4Yr Vice Mayor' AND candidateyear = '$currentyear';");
+                                if(mysqli_num_rows($result) != 0){
+                                    while($row = mysqli_fetch_assoc($result))
+                                    {
+                                        echo "<tr>
+                                        <td>{$row['idnum']}</td>
+                                        <td>{$row['firstname']} {$row['middleinitial']} {$row['lastname']}</td>
+                                        <td>{$row['yearlevel']}</td>
+                                        <td>{$row['collegecode']}</td>
+                                        </tr>\n";
+                                    }
+                                }else{
+                                    echo "</table>$error";
+                                }
+                            ?>
+                        </table>
+                        <br>
+                    </p>
+                </article>
+                <article>
+                    <h2>3rd Year Mayor</h2>
+                    <p>
+                        <table class="w3-table-all w3-hoverable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Year Level</th>
+                                    <th>College</th>
+                                </tr>
+                            </thead>
+                            <?php
+                                $result = mysqli_query($con,"SELECT * FROM user INNER JOIN course ON course_idcourse = idcourse INNER JOIN college ON college_idcollege = idcollege WHERE candidatetype ='3Yr Mayor' AND candidateyear = '$currentyear';");
+                                if(mysqli_num_rows($result) != 0){
+                                    while($row = mysqli_fetch_assoc($result))
+                                    {
+                                        echo "<tr>
+                                        <td>{$row['idnum']}</td>
+                                        <td>{$row['firstname']} {$row['middleinitial']} {$row['lastname']}</td>
+                                        <td>{$row['yearlevel']}</td>
+                                        <td>{$row['collegecode']}</td>
+                                        </tr>\n";
+                                    }
+                                }else{
+                                    echo "</table>$error";
+                                }
+                            ?>
+                        </table>
+                        <br>
+                    </p>
+                </article>
+                <article>
+                    <h2>3rd Year Vice Mayor</h2>
+                    <p>
+                        <table class="w3-table-all w3-hoverable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Year Level</th>
+                                    <th>College</th>
+                                </tr>
+                            </thead>
+                            <?php
+                                $result = mysqli_query($con,"SELECT * FROM user INNER JOIN course ON course_idcourse = idcourse INNER JOIN college ON college_idcollege = idcollege WHERE candidatetype = '3Yr Vice Mayor' AND candidateyear = '$currentyear';");
+                                if(mysqli_num_rows($result) != 0){
+                                    while($row = mysqli_fetch_assoc($result))
+                                    {
+                                        echo "<tr>
+                                        <td>{$row['idnum']}</td>
+                                        <td>{$row['firstname']} {$row['middleinitial']} {$row['lastname']}</td>
+                                        <td>{$row['yearlevel']}</td>
+                                        <td>{$row['collegecode']}</td>
+                                        </tr>\n";
+                                    }
+                                }else{
+                                    echo "</table>$error";
+                                }
+                            ?>
+                        </table>
+                        <br>
+                    </p>
+                </article>
+                <article>
+                    <h2>2nd Year Mayor</h2>
+                    <p>
+                        <table class="w3-table-all w3-hoverable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Year Level</th>
+                                    <th>College</th>
+                                </tr>
+                            </thead>
+                            <?php
+                                $result = mysqli_query($con,"SELECT * FROM user INNER JOIN course ON course_idcourse = idcourse INNER JOIN college ON college_idcollege = idcollege WHERE candidatetype ='2Yr Mayor' AND candidateyear = '$currentyear';");
+                                if(mysqli_num_rows($result) != 0){
+                                    while($row = mysqli_fetch_assoc($result))
+                                    {
+                                        echo "<tr>
+                                        <td>{$row['idnum']}</td>
+                                        <td>{$row['firstname']} {$row['middleinitial']} {$row['lastname']}</td>
+                                        <td>{$row['yearlevel']}</td>
+                                        <td>{$row['collegecode']}</td>
+                                        </tr>\n";
+                                    }
+                                }else{
+                                    echo "</table>$error";
+                                }
+                            ?>
+                        </table>
+                        <br>
+                    </p>
+                </article>
+                <article>
+                    <h2>2nd Year Vice Mayor</h2>
+                    <p>
+                        <table class="w3-table-all w3-hoverable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Year Level</th>
+                                    <th>College</th>
+                                </tr>
+                            </thead>
+                            <?php
+                                $result = mysqli_query($con,"SELECT * FROM user INNER JOIN course ON course_idcourse = idcourse INNER JOIN college ON college_idcollege = idcollege WHERE candidatetype ='2Yr Vice Mayor' AND candidateyear = '$currentyear';");
+                                if(mysqli_num_rows($result) != 0){
+                                    while($row = mysqli_fetch_assoc($result))
+                                    {
+                                        echo "<tr>
+                                        <td>{$row['idnum']}</td>
+                                        <td>{$row['firstname']} {$row['middleinitial']} {$row['lastname']}</td>
+                                        <td>{$row['yearlevel']}</td>
+                                        <td>{$row['collegecode']}</td>
+                                        </tr>\n";
+                                    }
+                                }else{
+                                    echo "</table>$error";
+                                }
+                            ?>
+                        </table>
+                        <br>
+                    </p>
+                </article>
+                <article>
+                    <h2>1st Year Mayor</h2>
+                    <p>
+                        <table class="w3-table-all w3-hoverable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Year Level</th>
+                                    <th>College</th>
+                                </tr>
+                            </thead>
+                            <?php
+                                $result = mysqli_query($con,"SELECT * FROM user INNER JOIN course ON course_idcourse = idcourse INNER JOIN college ON college_idcollege = idcollege WHERE candidatetype ='1Yr Mayor' AND candidateyear = '$currentyear';");
+                                if(mysqli_num_rows($result) != 0){
+                                    while($row = mysqli_fetch_assoc($result))
+                                    {
+                                        echo "<tr>
+                                        <td>{$row['idnum']}</td>
+                                        <td>{$row['firstname']} {$row['middleinitial']} {$row['lastname']}</td>
+                                        <td>{$row['yearlevel']}</td>
+                                        <td>{$row['collegecode']}</td>
+                                        </tr>\n";
+                                    }
+                                }else{
+                                    echo "</table>$error";
+                                }
+                            ?>
+                        </table>
+                        <br>
+                    </p>
+                </article>
+                <article>
+                    <h2>1st Year Vice Mayor</h2>
+                    <p>
+                        <table class="w3-table-all w3-hoverable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Year Level</th>
+                                    <th>College</th>
+                                </tr>
+                            </thead>
+                            <?php
+                                $result = mysqli_query($con,"SELECT * FROM user INNER JOIN course ON course_idcourse = idcourse INNER JOIN college ON college_idcollege = idcollege WHERE candidatetype = '1Yr Vice Mayor' AND candidateyear = '$currentyear';");
+                                if(mysqli_num_rows($result) != 0){
+                                    while($row = mysqli_fetch_assoc($result))
+                                    {
+                                        echo "<tr>
+                                        <td>{$row['idnum']}</td>
+                                        <td>{$row['firstname']} {$row['middleinitial']} {$row['lastname']}</td>
+                                        <td>{$row['yearlevel']}</td>
+                                        <td>{$row['collegecode']}</td>
+                                        </tr>\n";
+                                    }
+                                }else{
+                                    echo "</table>$error";
+                                }
+                            ?>
+                        </table>
+                        <br>
+                    </p>
+                </article>
+                <article>
+                    <h2>Architecture Representative</h2>
+                    <p>
+                        <table class="w3-table-all w3-hoverable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Year Level</th>
+                                    <th>College</th>
+                                </tr>
+                            </thead>
+                            <?php
+                                $result = mysqli_query($con,"SELECT * FROM user INNER JOIN course ON course_idcourse = idcourse INNER JOIN college ON college_idcollege = idcollege WHERE candidatetype ='Architecture Representative' AND candidateyear = '$currentyear';");
+                                if(mysqli_num_rows($result) != 0){
+                                    while($row = mysqli_fetch_assoc($result))
+                                    {
+                                        echo "<tr>
+                                        <td>{$row['idnum']}</td>
+                                        <td>{$row['firstname']} {$row['middleinitial']} {$row['lastname']}</td>
+                                        <td>{$row['yearlevel']}</td>
+                                        <td>{$row['collegecode']}</td>
+                                        </tr>\n";
+                                    }
+                                }else{
+                                    echo "</table>$error";
+                                }
+                            ?>
+                        </table>
+                        <br>
+                    </p>
+                </article>
+                <article>
+                    <h2>Civil Engineering Representative</h2>
+                    <p>
+                        <table class="w3-table-all w3-hoverable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Year Level</th>
+                                    <th>College</th>
+                                </tr>
+                            </thead>
+                            <?php
+                                $result = mysqli_query($con,"SELECT * FROM user INNER JOIN course ON course_idcourse = idcourse INNER JOIN college ON college_idcollege = idcollege WHERE candidatetype = 'Civil Engineering Representative' AND candidateyear = '$currentyear';");
+                                if(mysqli_num_rows($result) != 0){
+                                    while($row = mysqli_fetch_assoc($result))
+                                    {
+                                        echo "<tr>
+                                        <td>{$row['idnum']}</td>
+                                        <td>{$row['firstname']} {$row['middleinitial']} {$row['lastname']}</td>
+                                        <td>{$row['yearlevel']}</td>
+                                        <td>{$row['collegecode']}</td>
+                                        </tr>\n";
+                                    }
+                                }else{
+                                    echo "</table>$error";
+                                }
+                            ?>
+                        </table>
+                        <br>
+                    </p>
+                </article>
+                <article>
+                    <h2>Computer Engineering Representative</h2>
+                    <p>
+                        <table class="w3-table-all w3-hoverable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Year Level</th>
+                                    <th>College</th>
+                                </tr>
+                            </thead>
+                            <?php
+                                $result = mysqli_query($con,"SELECT * FROM user INNER JOIN course ON course_idcourse = idcourse INNER JOIN college ON college_idcollege = idcollege WHERE candidatetype ='Computer Engineering Representative' AND candidateyear = '$currentyear';");
+                                if(mysqli_num_rows($result) != 0){
+                                    while($row = mysqli_fetch_assoc($result))
+                                    {
+                                        echo "<tr>
+                                        <td>{$row['idnum']}</td>
+                                        <td>{$row['firstname']} {$row['middleinitial']} {$row['lastname']}</td>
+                                        <td>{$row['yearlevel']}</td>
+                                        <td>{$row['collegecode']}</td>
+                                        </tr>\n";
+                                    }
+                                }else{
+                                    echo "</table>$error";
+                                }
+                            ?>
+                        </table>
+                        <br>
+                    </p>
+                </article>
+                <article>
+                    <h2>Electrical Engineering Representative</h2>
+                    <p>
+                        <table class="w3-table-all w3-hoverable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Year Level</th>
+                                    <th>College</th>
+                                </tr>
+                            </thead>
+                            <?php
+                                $result = mysqli_query($con,"SELECT * FROM user INNER JOIN course ON course_idcourse = idcourse INNER JOIN college ON college_idcollege = idcollege WHERE candidatetype = 'Electrical Engineering Representative' AND candidateyear = '$currentyear';");
+                                if(mysqli_num_rows($result) != 0){
+                                    while($row = mysqli_fetch_assoc($result))
+                                    {
+                                        echo "<tr>
+                                        <td>{$row['idnum']}</td>
+                                        <td>{$row['firstname']} {$row['middleinitial']} {$row['lastname']}</td>
+                                        <td>{$row['yearlevel']}</td>
+                                        <td>{$row['collegecode']}</td>
+                                        </tr>\n";
+                                    }
+                                }else{
+                                    echo "</table>$error";
+                                }
+                            ?>
+                        </table>
+                        <br>
+                    </p>
+                </article>
+                <article>
+                    <h2>Mechanical Engineering Representative</h2>
+                    <p>
+                        <table class="w3-table-all w3-hoverable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Year Level</th>
+                                    <th>College</th>
+                                </tr>
+                            </thead>
+                            <?php
+                                $result = mysqli_query($con,"SELECT * FROM user INNER JOIN course ON course_idcourse = idcourse INNER JOIN college ON college_idcollege = idcollege WHERE candidatetype = 'Mechanical Engineering Representative' AND candidateyear = '$currentyear';");
+                                if(mysqli_num_rows($result) != 0){
+                                    while($row = mysqli_fetch_assoc($result))
+                                    {
+                                        echo "<tr>
+                                        <td>{$row['idnum']}</td>
+                                        <td>{$row['firstname']} {$row['middleinitial']} {$row['lastname']}</td>
+                                        <td>{$row['yearlevel']}</td>
+                                        <td>{$row['collegecode']}</td>
+                                        </tr>\n";
+                                    }
+                                }else{
+                                    echo "</table>$error";
+                                }
+                            ?>
+                        </table>
+                        <br>
+                    </p>
+                </article>
             </main>
             <aside>
+                <div><img src="../img/vote_logo.png" class="w3-container w3-circle" style ="width:50%"></div>
+                <!-- <div><img src="../img/avatar.png" class="w3-container w3-circle" style ="width:50%"></div>
                 <div><img src="../img/avatar.png" class="w3-container w3-circle" style ="width:50%"></div>
                 <div><img src="../img/avatar.png" class="w3-container w3-circle" style ="width:50%"></div>
                 <div><img src="../img/avatar.png" class="w3-container w3-circle" style ="width:50%"></div>
                 <div><img src="../img/avatar.png" class="w3-container w3-circle" style ="width:50%"></div>
-                <div><img src="../img/avatar.png" class="w3-container w3-circle" style ="width:50%"></div> 
+                <div><img src="../img/avatar.png" class="w3-container w3-circle" style ="width:50%"></div>
+                <div><img src="../img/avatar.png" class="w3-container w3-circle" style ="width:50%"></div>
+                <div><img src="../img/avatar.png" class="w3-container w3-circle" style ="width:50%"></div>
+                <div><img src="../img/avatar.png" class="w3-container w3-circle" style ="width:50%"></div> -->
             </aside>
         </section>
     </body>
@@ -174,5 +789,5 @@
             Contact: <a href="mailto:josepricardo%40su.edu.ph">Mail me</a>
 		</address>
         </footer>
-        <?php mysqli_close($con); // Closing Connection?> 
+        <?php mysqli_close($con); // Closing Connection?>
 </html>

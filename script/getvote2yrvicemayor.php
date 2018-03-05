@@ -18,7 +18,7 @@
                 require_once 'database.php';
                 $currentyear = strftime("%Y");
                 $q = intval($_GET['q']);
-                $result = mysqli_query($con,"SELECT * FROM user INNER JOIN course ON course_idcourse = idcourse INNER JOIN college ON college_idcollege = idcollege WHERE candidatetype ='Governor' AND idcollege ='$q' AND candidateyear ='$currentyear';");
+                $result = mysqli_query($con,"SELECT * FROM user INNER JOIN course ON course_idcourse = idcourse INNER JOIN college ON college_idcollege = idcollege WHERE candidatetype ='2Yr Vice Mayor' AND idcollege ='$q' AND candidateyear ='$currentyear';");
                 if($result != FALSE)
                 {
                     if(mysqli_num_rows($result) != 0)
@@ -26,7 +26,7 @@
                         while($row = mysqli_fetch_array($result))
                         {
                             $result2 = mysqli_query($con, "SELECT * FROM user INNER JOIN course ON course_idcourse = idcourse INNER JOIN college ON college_idcollege = idcollege WHERE college.name ='{$row['name']}';");
-                            $result3 = mysqli_query($con, "SELECT * FROM vote WHERE governor ='{$row['idnum']}';");
+                            $result3 = mysqli_query($con, "SELECT * FROM vote WHERE 2yrvicemayor ='{$row['idnum']}';");
                             $count = (mysqli_num_rows($result3));
                             $countall = (mysqli_num_rows($result2));
                             $percent = (mysqli_num_rows($result3)/mysqli_num_rows($result2))*100.00;

@@ -1,14 +1,16 @@
 <?php
-    if ($_SERVER['HTTPS'] != "on") {
-        $url = "https://". $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
-        header("Location: $url");
-        exit;
-    }
+    // if ($_SERVER['HTTPS'] != "on") {
+    //     $url = "https://". $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
+    //     header("Location: $url");
+    //     exit;
+    // }
     require '../script/login.php'; // Require Login Script
-    if(isset($_SESSION['login_voter']))
-    {
-        $_SESSION['error3'] = "Not Allowed";
+    if (isset($_SESSION['login_voter'])) {
+        $_SESSION['error3'] = "Not Allowed.";
         header("location: ../");
+    } else if (isset($_SESSION['login_admin'])) {
+        $_SESSION['Error'] = "Already Login.";
+        header("Refresh:2; URL=../");
     }
 ?>
 
@@ -51,7 +53,7 @@
             </strong>
         </section>
         <section id="pageContentCenter">
-            
+
                 <div class="w3-container w3-center w3-round-xxlarge w3-blue w3-padding-16">
                     <h2>Admin Login</h2>
                 </div>
@@ -69,19 +71,19 @@
                             }else unset($_SESSION['Error']);
                         ?>
                         <div class="g-recaptcha w3-container" data-sitekey="6Le7JzcUAAAAAAAwxxr1QX5XEGOcVVBV3fUfFzel"></div>
-                        <input class="w3-container w3-button w3-round-xxlarge w3-blue w3-padding" name="Submit" type="submit" value="Submit">    
-                    </form>  
+                        <input class="w3-container w3-button w3-round-xxlarge w3-blue w3-padding" name="Submit" type="submit" value="Submit">
+                    </form>
                 <br>
                 </div>
                 <div class="w3-display-container w3-center w3-round-xxlarge w3-blue w3-padding-16"></div>
                 <br>
-        </section> 
+        </section>
         <footer>
             <p>&copy; 2017 | <a href="http://html5-templates.com/" target="_blank" rel="nofollow">HTML5 Templates</a></p>
             <address>
-                Contact: <a href="mailto:josepricardo%40su.edu.ph">Mail me</a> 
+                Contact: <a href="mailto:josepricardo%40su.edu.ph">Mail Me</a>
 		    </address>
         </footer>
     </body>
-    <?php mysqli_close($con); // Closing Connection?> 
+    <?php mysqli_close($con); // Closing Connection?>
 </html>
