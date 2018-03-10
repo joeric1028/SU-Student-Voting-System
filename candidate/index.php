@@ -100,7 +100,6 @@
                         <table class="w3-table-all w3-hoverable">
                             <thead>
                                 <tr>
-                                    <th>Photo</th>
                                     <th>ID</th>
                                     <th>Name</th>
                                     <th>Year Level</th>
@@ -113,7 +112,6 @@
                                     while($row = mysqli_fetch_assoc($result))
                                     {
                                         echo "<tr>
-                                        <td>{$row['picture']}</td>
                                         <td>{$row['idnum']}</td>
                                         <td>{$row['firstname']} {$row['middleinitial']} {$row['lastname']}</td>
                                         <td>{$row['yearlevel']}</td>

@@ -19,7 +19,7 @@
     {
         $user_check = $_SESSION['login_voter'];
 
-        $ses_sql = mysqli_query($con,"SELECT * FROM user WHERE idnum='$user_check';");
+        $ses_sql = mysqli_query($con,"SELECT yearlevel, idnum, college.name AS collegename, course.name AS coursename, firstname, middleinitial, lastname, sex, contactno, birthday, birthplace, citizenship, civilstatus FROM user INNER JOIN course ON course_idcourse = idcourse INNER JOIN college ON college_idcollege = idcollege WHERE idnum='$user_check';");
         $row = mysqli_fetch_assoc($ses_sql);
         $_SESSION['login_voter_id'] = $row['idnum'];
         $_SESSION['college'] = $row['collegename'];

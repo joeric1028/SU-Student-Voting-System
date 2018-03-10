@@ -5,7 +5,7 @@
     <body>
         <table class="w3-table-all w3-hoverable">
             <thead>
-                <tr>
+                <tr><th></th>
                     <th>ID</th>
                     <th class = 'w3-center' style="min-width: 20px; max-width: 30px;">Name</th>
                     <th>Year Level</th>
@@ -25,7 +25,7 @@
                     {
                         while($row = mysqli_fetch_array($result))
                         {
-                            $result2 = mysqli_query($con, "SELECT * FROM user INNER JOIN course ON course_idcourse = idcourse INNER JOIN college ON college_idcollege = idcollege WHERE college.name ='{$row['name']}';");
+                            $result2 = mysqli_query($con, "SELECT * FROM user INNER JOIN course ON course_idcourse = idcourse INNER JOIN college ON college_idcollege = idcollege WHERE college.name ='{$row['name']}' AND yearlevel = '1' AND admintype = 'Student';");
                             $result3 = mysqli_query($con, "SELECT * FROM vote WHERE 1yrmayor ='{$row['idnum']}';");
                             $count = (mysqli_num_rows($result3));
                             $countall = (mysqli_num_rows($result2));

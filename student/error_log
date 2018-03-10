@@ -1,6 +1,0 @@
-[14-Jan-2018 02:33:18 UTC] PHP Warning:  mysqli_close(): Couldn't fetch mysqli in /home/joseric/public_html/beta/student/index.php on line 190
-[14-Jan-2018 02:33:47 UTC] PHP Warning:  mysqli_close(): Couldn't fetch mysqli in /home/joseric/public_html/beta/student/index.php on line 190
-[14-Jan-2018 02:35:08 UTC] PHP Warning:  mysqli_close(): Couldn't fetch mysqli in /home/joseric/public_html/beta/student/index.php on line 191
-[15-Jan-2018 00:59:36 UTC] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, boolean given in /home/joseric/public_html/beta/student/index.php on line 95
-[15-Jan-2018 00:59:36 UTC] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, boolean given in /home/joseric/public_html/beta/student/index.php on line 115
-[23-Feb-2018 07:52:10 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/joseric/public_html/beta/student/index.php:1) in /home/joseric/public_html/beta/script/session.php on line 3

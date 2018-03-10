@@ -29,12 +29,12 @@ if (isset($_POST['Submit'])) {
 
         // To protect MySQL injection for Security purpose
         $idnum = stripslashes($idnum);
-        $password = stripslashes($password);
+        $pin = stripslashes($pin);
         $idnum = mysqli_real_escape_string($con,$idnum);
-        $password = mysqli_real_escape_string($con,$password);
+        $pin = mysqli_real_escape_string($con,$pin);
 
         // SQL query to fetch information of registerd users and finds user match.
-        $query = mysqli_query($con,"SELECT * FROM user WHERE password='$password' AND idnum='$idnum' AND admintype='Student';");
+        $query = mysqli_query($con,"SELECT * FROM user WHERE password='$pin' AND idnum='$idnum' AND admintype='Student';");
         $rows = mysqli_num_rows($query);
         if ($rows == 1) {
             $_SESSION['login_voter'] = $idnum; // Initializing Session

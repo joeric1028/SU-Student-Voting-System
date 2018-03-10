@@ -1,2 +1,0 @@
-[29-Jan-2018 18:30:58 UTC] PHP Warning:  mysqli_close(): Couldn't fetch mysqli in /home/joseric/public_html/beta/voter/index.php on line 95
-[29-Jan-2018 18:31:19 UTC] PHP Warning:  mysqli_close(): Couldn't fetch mysqli in /home/joseric/public_html/beta/voter/index.php on line 95

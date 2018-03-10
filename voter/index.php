@@ -5,22 +5,19 @@
     //     exit;
     // }
     require '../script/login.php'; // Require Login Script
-
-    if(!isset($_POST['studentSubmit'])) {
-
-    }
     if (isset($_SESSION['Error'])) {
         if($_SESSION['Error'] == "Successfully Login!") {
             header("Refresh:1; URL=../");
+         }
+    } else {
+        if(isset($_SESSION['login_voter'])) {
+            $_SESSION['Error'] = "Already Login!";
+            header("Refresh:2; URL=../");
         }
-    }
-    if(isset($_SESSION['login_voter'])) {
-        $_SESSION['Error'] = "Already Login!";
-        header("Refresh:1; URL=../");
-    }
-    if(isset($_SESSION['login_admin'])) {
-        $_SESSION['error3'] = "Not Allowed!";
-        header("location: ../");
+        if(isset($_SESSION['login_admin'])) {
+            $_SESSION['error3'] = "Not Allowed!";
+            header("location: ../");
+        }
     }
 ?>
 
@@ -36,6 +33,7 @@
         <link href="../css/w3.css" rel="stylesheet" type="text/css">
         <link href="../css/style.css" rel="stylesheet" type="text/css">
         <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+        <script src='https://www.google.com/recaptcha/api.js'></script>
     </head>
 
     <body>
@@ -44,11 +42,20 @@
         <nav>
             <ul>
                 <?php
-                    if(isset($_SESSION['login_admin']))echo "<li><a href='../candidate'>CANDIDATE</a></li>
-                                                <li><a href='../student'>STUDENT</a></li>";
+                    // if(isset($_SESSION['login_admin']))echo "<li><a href='../candidate'>CANDIDATE</a></li>
+                    //                             <li><a href='../student'>STUDENT</a></li>";
+                    if(isset($_SESSION['login_admin_id']))echo "<li><a href='../candidate'>CANDIDATE</a></li>
+                                                            <li><a href='../student'>STUDENT</a></li>
+                                                            <li><a href='../profile'>MY PROFILE</a></li>";
+                    else if(isset($_SESSION['login_voter_id']))
+                    {
+                        echo '<li><a href="../vote">VOTE</a></li>
+                            <li><a href="../voterprofile">MY PROFILE</a></li>';
+                    }else echo '<li><a href="../voter">VOTER</a></li>
+                            <li><a href="../admin">ADMIN</a></li>';
                 ?>
-                <li><a href="../voter">VOTER</a></li>
-                <li><a href="../admin">ADMIN</a></li>
+                <!-- <li><a href="../voter">VOTER</a></li>
+                <li><a href="../admin">ADMIN</a></li> -->
             </ul>
         </nav>
         </header>
@@ -65,19 +72,24 @@
                     <form class="w3-container" method="post" action="index.php">
                         <label class="w3-container w3-text-teal"><b>ID Number :</b></label>
                         <input class="w3-container w3-input w3-light-grey w3-border w3-padding" type="text" name="idnum" placeholder="Enter ID Number" required>
-                        <label class="w3-container w3-text-teal"><b>PIN :</b></label>
-                        <input class="w3-container w3-input w3-light-grey w3-border w3-padding" type="password" name="pin" placeholder="Enter PIN" required>
+                        <label class="w3-container w3-text-teal"><b>Password :</b></label>
+                        <input class="w3-container w3-input w3-light-grey w3-border w3-padding" type="password" name="password" placeholder="Enter your password" required>
                         <br><br>
                         <?php
-                            if (isset($_SESSION['Error'])){
-                                echo "<label class = 'w3-container w3-text-red'>{$_SESSION['Error']}</label><br>";
-                                if($_SESSION['Error'] == "Successfully Login!")
-                                {
-                                    header("Refresh:1;URL=../");
-                                }
-                                unset($_SESSION['Error']);
-                            } else unset($_SESSION['Error']);
+                            // if (isset($_SESSION['Error'])){
+                            //     echo "<label class = 'w3-container w3-text-red'>{$_SESSION['Error']}</label><br>";
+                            //     if($_SESSION['Error'] == "Successfully Login!")
+                            //     {
+                            //         header("Refresh:1;URL=../");
+                            //     }
+                            //     unset($_SESSION['Error']);
+                            // } else unset($_SESSION['Error']);
+                            if(isset($_SESSION['Error'])){
+                            echo "<label class = 'w3-container w3-text-red'>{$_SESSION['Error']}</label><br>";
+                            unset($_SESSION['Error']);
+                            }else unset($_SESSION['Error']);
                         ?>
+                        <div class="g-recaptcha w3-container" data-sitekey="6Le7JzcUAAAAAAAwxxr1QX5XEGOcVVBV3fUfFzel"></div>
                         <input class="w3-container w3-button w3-round-xxlarge w3-blue" name="studentSubmit" type="submit" value="Submit">
                     </form>
                 <br>
@@ -92,5 +104,4 @@
 		    </address>
         </footer>
     </body>
-    <?php mysqli_close($con); // Closing Connection?>
 </html>
