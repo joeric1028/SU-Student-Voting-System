@@ -1,32 +1,22 @@
 <?php
-    require '../script/session.php'; // Includes Login Script
-    if(isset($_SESSION['login_voter_id']))
-    {
+    require_once '../script/session.php';
+    if (isset($_SESSION['login_voter_id'])) {
         $_SESSION['error3'] = "Not Allowed!";
         header('location:../');
-    }else if(!isset($_SESSION['login_admin_id']))
-    {
+    } else if(!isset($_SESSION['login_admin_id'])) {
         $_SESSION['Error'] = "Please Login First!";
         header('location: ../admin');
     }
-    if(isset($_POST['logout_user']))
-    {
-        if(session_destroy()) // Destroying All Sessions
-        {
-            $error2 = "Successfully Logout! Please come back soon!";
-            header('Refresh: 1; URL=../');
-        }else{
-            $error2 = "Already Logout! Please come back soon!";
-            header('Refresh: 1; URL=../');
-        }
+    if (isset($_POST['logout_user'])) {
+        if (session_destroy()) $error2 = "Successfully Logout! Please come back soon!";
+        else $error2 = "Already Logout! Please come back soon!";
+        header('Refresh: 1; URL=../');
     }
     $error = 'No Candidate Yet';
     $currentyear = strftime("%Y");
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
-
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -44,15 +34,14 @@
         <nav>
             <ul>
                 <?php
-                    if(isset($_SESSION['login_admin_id']))echo "<li><a href='../candidate'>CANDIDATE</a></li>
+                    if (isset($_SESSION['login_admin_id'])) echo "<li><a href='../candidate'>CANDIDATE</a></li>
                                                             <li><a href='../student'>STUDENT</a></li>
                                                             <li><a href='../profile'>MY PROFILE</a></li>
                                                             <li><a href='../register'>REGISTER</a></li>";
-                    else if(isset($_SESSION['login_voter_id']))
-                    {
+                    else if (isset($_SESSION['login_voter_id'])) {
                         echo '<li><a href="../vote">VOTE</a></li>
                             <li><a href="../voterprofile">MY PROFILE</a></li>';
-                    }else echo '<li><a href="../voter">VOTER</a></li>
+                    } else echo '<li><a href="../voter">VOTER</a></li>
                             <li><a href="../admin">ADMIN</a></li>';
                 ?>
             </ul>
@@ -63,27 +52,17 @@
     <div id="profile">
         <b id="welcome">Welcome
         <?php
-            if(isset($_SESSION['login_admin_id']))
-            {
+            if (isset($_SESSION['login_admin_id'])) {
                 echo "Admin: ".$row['firstname'].' '.$row['middleinitial'].' '.$row['lastname'].'<form action="index.php" method="post">
                 <input type="submit" value="LOGOUT" class = "w3-button" name = "logout_user">
                 </form>';
-                if(empty($error2)){
-                }else{
-                    echo $error2;
-                }
-            }else if(isset($_SESSION['login_voter_id']))
-            {
+                if (!empty($error2)) echo $error2;
+            } else if (isset($_SESSION['login_voter_id'])) {
                 echo "Voter: ".$row['firstname'].' '.$row['middleinitial'].' '.$row['lastname'].'<form action="index.php" method="post">
                 <input type="submit" value="LOGOUT" class = "w3-button" name = "logout_user">
                 </form>';
-                if(empty($error2)){
-                }else{
-                    echo $error2;
-                }
-            }else{
-                echo "Guest:";
-            }
+                if (!empty($error2)) echo $error2;
+            } else echo "Guest:";
         ?>
         </b>
     </div>
@@ -91,15 +70,12 @@
 </section>
         <section id="pageContent">
             <main role="main">
-                <article>
-                    <h1>Candidates</h1>
-                </article>
-                <article>
-                    <h2>Governor</h2>
+                <article><h1>Candidates</h1></article>
+                <article><h2>Governor</h2>
                     <p>
                         <table class="w3-table-all w3-hoverable">
                             <thead>
-                                <tr>
+                                <tr><th></th>
                                     <th>ID</th>
                                     <th>Name</th>
                                     <th>Year Level</th>
@@ -108,19 +84,21 @@
                             </thead>
                             <?php
                                 $result = mysqli_query($con,"SELECT * FROM user INNER JOIN course ON course_idcourse = idcourse INNER JOIN college ON college_idcollege = idcollege WHERE candidatetype ='Governor' AND candidateyear = '$currentyear';");
-                                if(mysqli_num_rows($result) != 0){
-                                    while($row = mysqli_fetch_assoc($result))
-                                    {
-                                        echo "<tr>
-                                        <td>{$row['idnum']}</td>
-                                        <td>{$row['firstname']} {$row['middleinitial']} {$row['lastname']}</td>
-                                        <td>{$row['yearlevel']}</td>
-                                        <td>{$row['collegecode']}</td>
-                                        </tr>\n";
+                                if (mysqli_num_rows($result) != 0) {
+                                    while($row = mysqli_fetch_assoc($result)) {
+                                        echo "<tr><td valign='middle'>";
+                                        if (empty($row['picture'])) {
+                                            if($row['sex'] == "Male")echo '<img src="../img/avatarM.png" width="100" height="100" class="w3-circle w3-card-2">';
+                                            else echo '<img src="../img/avatarF.png" width="100" height="100" class="w3-circle">';
+                                        } else echo '<img src="data:image/jpeg;base64,'.base64_encode( $row['picture'] ).'" width="100" height="100" class="w3-circle w3-card-2">';
+                                        echo "</td>
+                                         <td>{$row['idnum']}</td>
+                                         <td>{$row['firstname']} {$row['middleinitial']} {$row['lastname']}</td>
+                                         <td>{$row['yearlevel']}</td>
+                                         <td>{$row['collegecode']}</td>
+                                         </tr>\n";
                                     }
-                                }else{
-                                    echo "</table>$error";
-                                }
+                                } else echo "</table>$error";
                             ?>
                         </table>
                         <br>
@@ -131,7 +109,7 @@
                     <p>
                         <table class="w3-table-all w3-hoverable">
                             <thead>
-                                <tr>
+                                <tr><th></th>
                                     <th>ID</th>
                                     <th>Name</th>
                                     <th>Year Level</th>
@@ -143,7 +121,12 @@
                                 if(mysqli_num_rows($result) != 0){
                                     while($row = mysqli_fetch_assoc($result))
                                     {
-                                        echo "<tr>
+                                        echo "<tr><td valign='middle'>";
+                                        if (empty($row['picture'])) {
+                                            if($row['sex'] == "Male")echo '<img src="../img/avatarM.png" width="100" height="100" class="w3-circle w3-card-2">';
+                                            else echo '<img src="../img/avatarF.png" width="100" height="100" class="w3-circle">';
+                                        } else echo '<img src="data:image/jpeg;base64,'.base64_encode( $row['picture'] ).'" width="100" height="100" class="w3-circle w3-card-2">';
+                                        echo "</td>
                                         <td>{$row['idnum']}</td>
                                         <td>{$row['firstname']} {$row['middleinitial']} {$row['lastname']}</td>
                                         <td>{$row['yearlevel']}</td>
@@ -163,7 +146,7 @@
                     <p>
                         <table class="w3-table-all w3-hoverable">
                             <thead>
-                                <tr>
+                                <tr><th></th>
                                     <th>ID</th>
                                     <th>Name</th>
                                     <th>Year Level</th>
@@ -175,7 +158,12 @@
                                 if(mysqli_num_rows($result) != 0){
                                     while($row = mysqli_fetch_assoc($result))
                                     {
-                                        echo "<tr>
+                                        echo "<tr><td valign='middle'>";
+                                        if (empty($row['picture'])) {
+                                            if($row['sex'] == "Male")echo '<img src="../img/avatarM.png" width="100" height="100" class="w3-circle w3-card-2">';
+                                            else echo '<img src="../img/avatarF.png" width="100" height="100" class="w3-circle">';
+                                        } else echo '<img src="data:image/jpeg;base64,'.base64_encode( $row['picture'] ).'" width="100" height="100" class="w3-circle w3-card-2">';
+                                        echo "</td>
                                         <td>{$row['idnum']}</td>
                                         <td>{$row['firstname']} {$row['middleinitial']} {$row['lastname']}</td>
                                         <td>{$row['yearlevel']}</td>
@@ -195,7 +183,7 @@
                     <p>
                         <table class="w3-table-all w3-hoverable">
                             <thead>
-                                <tr>
+                                <tr><th></th>
                                     <th>ID</th>
                                     <th>Name</th>
                                     <th>Year Level</th>
@@ -207,7 +195,12 @@
                                 if(mysqli_num_rows($result) != 0){
                                     while($row = mysqli_fetch_assoc($result))
                                     {
-                                        echo "<tr>
+                                        echo "<tr><td valign='middle'>";
+                                        if (empty($row['picture'])) {
+                                            if($row['sex'] == "Male")echo '<img src="../img/avatarM.png" width="100" height="100" class="w3-circle w3-card-2">';
+                                            else echo '<img src="../img/avatarF.png" width="100" height="100" class="w3-circle">';
+                                        } else echo '<img src="data:image/jpeg;base64,'.base64_encode( $row['picture'] ).'" width="100" height="100" class="w3-circle w3-card-2">';
+                                        echo "</td>
                                         <td>{$row['idnum']}</td>
                                         <td>{$row['firstname']} {$row['middleinitial']} {$row['lastname']}</td>
                                         <td>{$row['yearlevel']}</td>
@@ -227,7 +220,7 @@
                     <p>
                         <table class="w3-table-all w3-hoverable">
                             <thead>
-                                <tr>
+                                <tr><th></th>
                                     <th>ID</th>
                                     <th>Name</th>
                                     <th>Year Level</th>
@@ -239,7 +232,12 @@
                                 if(mysqli_num_rows($result) != 0){
                                     while($row = mysqli_fetch_assoc($result))
                                     {
-                                        echo "<tr>
+                                        echo "<tr><td valign='middle'>";
+                                        if (empty($row['picture'])) {
+                                            if($row['sex'] == "Male")echo '<img src="../img/avatarM.png" width="100" height="100" class="w3-circle w3-card-2">';
+                                            else echo '<img src="../img/avatarF.png" width="100" height="100" class="w3-circle">';
+                                        } else echo '<img src="data:image/jpeg;base64,'.base64_encode( $row['picture'] ).'" width="100" height="100" class="w3-circle w3-card-2">';
+                                        echo "</td>
                                         <td>{$row['idnum']}</td>
                                         <td>{$row['firstname']} {$row['middleinitial']} {$row['lastname']}</td>
                                         <td>{$row['yearlevel']}</td>
@@ -259,7 +257,7 @@
                     <p>
                         <table class="w3-table-all w3-hoverable">
                             <thead>
-                                <tr>
+                                <tr><th></th>
                                     <th>ID</th>
                                     <th>Name</th>
                                     <th>Year Level</th>
@@ -271,7 +269,12 @@
                                 if(mysqli_num_rows($result) != 0){
                                     while($row = mysqli_fetch_assoc($result))
                                     {
-                                        echo "<tr>
+                                        echo "<tr><td valign='middle'>";
+                                        if (empty($row['picture'])) {
+                                            if($row['sex'] == "Male")echo '<img src="../img/avatarM.png" width="100" height="100" class="w3-circle w3-card-2">';
+                                            else echo '<img src="../img/avatarF.png" width="100" height="100" class="w3-circle">';
+                                        } else echo '<img src="data:image/jpeg;base64,'.base64_encode( $row['picture'] ).'" width="100" height="100" class="w3-circle w3-card-2">';
+                                        echo "</td>
                                         <td>{$row['idnum']}</td>
                                         <td>{$row['firstname']} {$row['middleinitial']} {$row['lastname']}</td>
                                         <td>{$row['yearlevel']}</td>
@@ -291,7 +294,7 @@
                     <p>
                         <table class="w3-table-all w3-hoverable">
                             <thead>
-                                <tr>
+                                <tr><th></th>
                                     <th>ID</th>
                                     <th>Name</th>
                                     <th>Year Level</th>
@@ -303,7 +306,12 @@
                                 if(mysqli_num_rows($result) != 0){
                                     while($row = mysqli_fetch_assoc($result))
                                     {
-                                        echo "<tr>
+                                        echo "<tr><td valign='middle'>";
+                                        if (empty($row['picture'])) {
+                                            if($row['sex'] == "Male")echo '<img src="../img/avatarM.png" width="100" height="100" class="w3-circle w3-card-2">';
+                                            else echo '<img src="../img/avatarF.png" width="100" height="100" class="w3-circle">';
+                                        } else echo '<img src="data:image/jpeg;base64,'.base64_encode( $row['picture'] ).'" width="100" height="100" class="w3-circle w3-card-2">';
+                                        echo "</td>
                                         <td>{$row['idnum']}</td>
                                         <td>{$row['firstname']} {$row['middleinitial']} {$row['lastname']}</td>
                                         <td>{$row['yearlevel']}</td>
@@ -323,7 +331,7 @@
                     <p>
                         <table class="w3-table-all w3-hoverable">
                             <thead>
-                                <tr>
+                                <tr><th></th>
                                     <th>ID</th>
                                     <th>Name</th>
                                     <th>Year Level</th>
@@ -335,7 +343,12 @@
                                 if(mysqli_num_rows($result) != 0){
                                     while($row = mysqli_fetch_assoc($result))
                                     {
-                                        echo "<tr>
+                                        echo "<tr><td valign='middle'>";
+                                        if (empty($row['picture'])) {
+                                            if($row['sex'] == "Male")echo '<img src="../img/avatarM.png" width="100" height="100" class="w3-circle w3-card-2">';
+                                            else echo '<img src="../img/avatarF.png" width="100" height="100" class="w3-circle">';
+                                        } else echo '<img src="data:image/jpeg;base64,'.base64_encode( $row['picture'] ).'" width="100" height="100" class="w3-circle w3-card-2">';
+                                        echo "</td>
                                         <td>{$row['idnum']}</td>
                                         <td>{$row['firstname']} {$row['middleinitial']} {$row['lastname']}</td>
                                         <td>{$row['yearlevel']}</td>
@@ -355,7 +368,7 @@
                     <p>
                         <table class="w3-table-all w3-hoverable">
                             <thead>
-                                <tr>
+                                <tr><th></th>
                                     <th>ID</th>
                                     <th>Name</th>
                                     <th>Year Level</th>
@@ -367,7 +380,12 @@
                                 if(mysqli_num_rows($result) != 0){
                                     while($row = mysqli_fetch_assoc($result))
                                     {
-                                        echo "<tr>
+                                        echo "<tr><td valign='middle'>";
+                                        if (empty($row['picture'])) {
+                                            if($row['sex'] == "Male")echo '<img src="../img/avatarM.png" width="100" height="100" class="w3-circle w3-card-2">';
+                                            else echo '<img src="../img/avatarF.png" width="100" height="100" class="w3-circle">';
+                                        } else echo '<img src="data:image/jpeg;base64,'.base64_encode( $row['picture'] ).'" width="100" height="100" class="w3-circle w3-card-2">';
+                                        echo "</td>
                                         <td>{$row['idnum']}</td>
                                         <td>{$row['firstname']} {$row['middleinitial']} {$row['lastname']}</td>
                                         <td>{$row['yearlevel']}</td>
@@ -387,7 +405,7 @@
                     <p>
                         <table class="w3-table-all w3-hoverable">
                             <thead>
-                                <tr>
+                                <tr><th></th>
                                     <th>ID</th>
                                     <th>Name</th>
                                     <th>Year Level</th>
@@ -399,7 +417,12 @@
                                 if(mysqli_num_rows($result) != 0){
                                     while($row = mysqli_fetch_assoc($result))
                                     {
-                                        echo "<tr>
+                                        echo "<tr><td valign='middle'>";
+                                        if (empty($row['picture'])) {
+                                            if($row['sex'] == "Male")echo '<img src="../img/avatarM.png" width="100" height="100" class="w3-circle w3-card-2">';
+                                            else echo '<img src="../img/avatarF.png" width="100" height="100" class="w3-circle">';
+                                        } else echo '<img src="data:image/jpeg;base64,'.base64_encode( $row['picture'] ).'" width="100" height="100" class="w3-circle w3-card-2">';
+                                        echo "</td>
                                         <td>{$row['idnum']}</td>
                                         <td>{$row['firstname']} {$row['middleinitial']} {$row['lastname']}</td>
                                         <td>{$row['yearlevel']}</td>
@@ -419,7 +442,7 @@
                     <p>
                         <table class="w3-table-all w3-hoverable">
                             <thead>
-                                <tr>
+                                <tr><th></th>
                                     <th>ID</th>
                                     <th>Name</th>
                                     <th>Year Level</th>
@@ -431,7 +454,12 @@
                                 if(mysqli_num_rows($result) != 0){
                                     while($row = mysqli_fetch_assoc($result))
                                     {
-                                        echo "<tr>
+                                        echo "<tr><td valign='middle'>";
+                                        if (empty($row['picture'])) {
+                                            if($row['sex'] == "Male")echo '<img src="../img/avatarM.png" width="100" height="100" class="w3-circle w3-card-2">';
+                                            else echo '<img src="../img/avatarF.png" width="100" height="100" class="w3-circle">';
+                                        } else echo '<img src="data:image/jpeg;base64,'.base64_encode( $row['picture'] ).'" width="100" height="100" class="w3-circle w3-card-2">';
+                                        echo "</td>
                                         <td>{$row['idnum']}</td>
                                         <td>{$row['firstname']} {$row['middleinitial']} {$row['lastname']}</td>
                                         <td>{$row['yearlevel']}</td>
@@ -451,7 +479,7 @@
                     <p>
                         <table class="w3-table-all w3-hoverable">
                             <thead>
-                                <tr>
+                                <tr><th></th>
                                     <th>ID</th>
                                     <th>Name</th>
                                     <th>Year Level</th>
@@ -463,7 +491,12 @@
                                 if(mysqli_num_rows($result) != 0){
                                     while($row = mysqli_fetch_assoc($result))
                                     {
-                                        echo "<tr>
+                                        echo "<tr><td valign='middle'>";
+                                        if (empty($row['picture'])) {
+                                            if($row['sex'] == "Male")echo '<img src="../img/avatarM.png" width="100" height="100" class="w3-circle w3-card-2">';
+                                            else echo '<img src="../img/avatarF.png" width="100" height="100" class="w3-circle">';
+                                        } else echo '<img src="data:image/jpeg;base64,'.base64_encode( $row['picture'] ).'" width="100" height="100" class="w3-circle w3-card-2">';
+                                        echo "</td>
                                         <td>{$row['idnum']}</td>
                                         <td>{$row['firstname']} {$row['middleinitial']} {$row['lastname']}</td>
                                         <td>{$row['yearlevel']}</td>
@@ -483,7 +516,7 @@
                     <p>
                         <table class="w3-table-all w3-hoverable">
                             <thead>
-                                <tr>
+                                <tr><th></th>
                                     <th>ID</th>
                                     <th>Name</th>
                                     <th>Year Level</th>
@@ -495,7 +528,12 @@
                                 if(mysqli_num_rows($result) != 0){
                                     while($row = mysqli_fetch_assoc($result))
                                     {
-                                        echo "<tr>
+                                        echo "<tr><td valign='middle'>";
+                                        if (empty($row['picture'])) {
+                                            if($row['sex'] == "Male")echo '<img src="../img/avatarM.png" width="100" height="100" class="w3-circle w3-card-2">';
+                                            else echo '<img src="../img/avatarF.png" width="100" height="100" class="w3-circle">';
+                                        } else echo '<img src="data:image/jpeg;base64,'.base64_encode( $row['picture'] ).'" width="100" height="100" class="w3-circle w3-card-2">';
+                                        echo "</td>
                                         <td>{$row['idnum']}</td>
                                         <td>{$row['firstname']} {$row['middleinitial']} {$row['lastname']}</td>
                                         <td>{$row['yearlevel']}</td>
@@ -515,7 +553,7 @@
                     <p>
                         <table class="w3-table-all w3-hoverable">
                             <thead>
-                                <tr>
+                                <tr><th></th>
                                     <th>ID</th>
                                     <th>Name</th>
                                     <th>Year Level</th>
@@ -527,7 +565,12 @@
                                 if(mysqli_num_rows($result) != 0){
                                     while($row = mysqli_fetch_assoc($result))
                                     {
-                                        echo "<tr>
+                                        echo "<tr><td valign='middle'>";
+                                        if (empty($row['picture'])) {
+                                            if($row['sex'] == "Male")echo '<img src="../img/avatarM.png" width="100" height="100" class="w3-circle w3-card-2">';
+                                            else echo '<img src="../img/avatarF.png" width="100" height="100" class="w3-circle">';
+                                        } else echo '<img src="data:image/jpeg;base64,'.base64_encode( $row['picture'] ).'" width="100" height="100" class="w3-circle w3-card-2">';
+                                        echo "</td>
                                         <td>{$row['idnum']}</td>
                                         <td>{$row['firstname']} {$row['middleinitial']} {$row['lastname']}</td>
                                         <td>{$row['yearlevel']}</td>
@@ -547,7 +590,7 @@
                     <p>
                         <table class="w3-table-all w3-hoverable">
                             <thead>
-                                <tr>
+                                <tr><th></th>
                                     <th>ID</th>
                                     <th>Name</th>
                                     <th>Year Level</th>
@@ -559,7 +602,12 @@
                                 if(mysqli_num_rows($result) != 0){
                                     while($row = mysqli_fetch_assoc($result))
                                     {
-                                        echo "<tr>
+                                        echo "<tr><td valign='middle'>";
+                                        if (empty($row['picture'])) {
+                                            if($row['sex'] == "Male")echo '<img src="../img/avatarM.png" width="100" height="100" class="w3-circle w3-card-2">';
+                                            else echo '<img src="../img/avatarF.png" width="100" height="100" class="w3-circle">';
+                                        } else echo '<img src="data:image/jpeg;base64,'.base64_encode( $row['picture'] ).'" width="100" height="100" class="w3-circle w3-card-2">';
+                                        echo "</td>
                                         <td>{$row['idnum']}</td>
                                         <td>{$row['firstname']} {$row['middleinitial']} {$row['lastname']}</td>
                                         <td>{$row['yearlevel']}</td>
@@ -579,7 +627,7 @@
                     <p>
                         <table class="w3-table-all w3-hoverable">
                             <thead>
-                                <tr>
+                                <tr><th></th>
                                     <th>ID</th>
                                     <th>Name</th>
                                     <th>Year Level</th>
@@ -591,7 +639,12 @@
                                 if(mysqli_num_rows($result) != 0){
                                     while($row = mysqli_fetch_assoc($result))
                                     {
-                                        echo "<tr>
+                                        echo "<tr><td valign='middle'>";
+                                        if (empty($row['picture'])) {
+                                            if($row['sex'] == "Male")echo '<img src="../img/avatarM.png" width="100" height="100" class="w3-circle w3-card-2">';
+                                            else echo '<img src="../img/avatarF.png" width="100" height="100" class="w3-circle">';
+                                        } else echo '<img src="data:image/jpeg;base64,'.base64_encode( $row['picture'] ).'" width="100" height="100" class="w3-circle w3-card-2">';
+                                        echo "</td>
                                         <td>{$row['idnum']}</td>
                                         <td>{$row['firstname']} {$row['middleinitial']} {$row['lastname']}</td>
                                         <td>{$row['yearlevel']}</td>
@@ -611,7 +664,7 @@
                     <p>
                         <table class="w3-table-all w3-hoverable">
                             <thead>
-                                <tr>
+                                <tr><th></th>
                                     <th>ID</th>
                                     <th>Name</th>
                                     <th>Year Level</th>
@@ -623,7 +676,12 @@
                                 if(mysqli_num_rows($result) != 0){
                                     while($row = mysqli_fetch_assoc($result))
                                     {
-                                        echo "<tr>
+                                        echo "<tr><td valign='middle'>";
+                                        if (empty($row['picture'])) {
+                                            if($row['sex'] == "Male")echo '<img src="../img/avatarM.png" width="100" height="100" class="w3-circle w3-card-2">';
+                                            else echo '<img src="../img/avatarF.png" width="100" height="100" class="w3-circle">';
+                                        } else echo '<img src="data:image/jpeg;base64,'.base64_encode( $row['picture'] ).'" width="100" height="100" class="w3-circle w3-card-2">';
+                                        echo "</td>
                                         <td>{$row['idnum']}</td>
                                         <td>{$row['firstname']} {$row['middleinitial']} {$row['lastname']}</td>
                                         <td>{$row['yearlevel']}</td>
@@ -643,7 +701,7 @@
                     <p>
                         <table class="w3-table-all w3-hoverable">
                             <thead>
-                                <tr>
+                                <tr><th></th>
                                     <th>ID</th>
                                     <th>Name</th>
                                     <th>Year Level</th>
@@ -655,7 +713,12 @@
                                 if(mysqli_num_rows($result) != 0){
                                     while($row = mysqli_fetch_assoc($result))
                                     {
-                                        echo "<tr>
+                                        echo "<tr><td valign='middle'>";
+                                        if (empty($row['picture'])) {
+                                            if($row['sex'] == "Male")echo '<img src="../img/avatarM.png" width="100" height="100" class="w3-circle w3-card-2">';
+                                            else echo '<img src="../img/avatarF.png" width="100" height="100" class="w3-circle">';
+                                        } else echo '<img src="data:image/jpeg;base64,'.base64_encode( $row['picture'] ).'" width="100" height="100" class="w3-circle w3-card-2">';
+                                        echo "</td>
                                         <td>{$row['idnum']}</td>
                                         <td>{$row['firstname']} {$row['middleinitial']} {$row['lastname']}</td>
                                         <td>{$row['yearlevel']}</td>
@@ -675,7 +738,7 @@
                     <p>
                         <table class="w3-table-all w3-hoverable">
                             <thead>
-                                <tr>
+                                <tr><th></th>
                                     <th>ID</th>
                                     <th>Name</th>
                                     <th>Year Level</th>
@@ -687,7 +750,12 @@
                                 if(mysqli_num_rows($result) != 0){
                                     while($row = mysqli_fetch_assoc($result))
                                     {
-                                        echo "<tr>
+                                        echo "<tr><td valign='middle'>";
+                                        if (empty($row['picture'])) {
+                                            if($row['sex'] == "Male")echo '<img src="../img/avatarM.png" width="100" height="100" class="w3-circle w3-card-2">';
+                                            else echo '<img src="../img/avatarF.png" width="100" height="100" class="w3-circle">';
+                                        } else echo '<img src="data:image/jpeg;base64,'.base64_encode( $row['picture'] ).'" width="100" height="100" class="w3-circle w3-card-2">';
+                                        echo "</td>
                                         <td>{$row['idnum']}</td>
                                         <td>{$row['firstname']} {$row['middleinitial']} {$row['lastname']}</td>
                                         <td>{$row['yearlevel']}</td>
@@ -707,7 +775,7 @@
                     <p>
                         <table class="w3-table-all w3-hoverable">
                             <thead>
-                                <tr>
+                                <tr><th></th>
                                     <th>ID</th>
                                     <th>Name</th>
                                     <th>Year Level</th>
@@ -719,7 +787,12 @@
                                 if(mysqli_num_rows($result) != 0){
                                     while($row = mysqli_fetch_assoc($result))
                                     {
-                                        echo "<tr>
+                                        echo "<tr><td valign='middle'>";
+                                        if (empty($row['picture'])) {
+                                            if($row['sex'] == "Male")echo '<img src="../img/avatarM.png" width="100" height="100" class="w3-circle w3-card-2">';
+                                            else echo '<img src="../img/avatarF.png" width="100" height="100" class="w3-circle">';
+                                        } else echo '<img src="data:image/jpeg;base64,'.base64_encode( $row['picture'] ).'" width="100" height="100" class="w3-circle w3-card-2">';
+                                        echo "</td>
                                         <td>{$row['idnum']}</td>
                                         <td>{$row['firstname']} {$row['middleinitial']} {$row['lastname']}</td>
                                         <td>{$row['yearlevel']}</td>
@@ -739,7 +812,7 @@
                     <p>
                         <table class="w3-table-all w3-hoverable">
                             <thead>
-                                <tr>
+                                <tr><th></th>
                                     <th>ID</th>
                                     <th>Name</th>
                                     <th>Year Level</th>
@@ -751,7 +824,12 @@
                                 if(mysqli_num_rows($result) != 0){
                                     while($row = mysqli_fetch_assoc($result))
                                     {
-                                        echo "<tr>
+                                        echo "<tr><td valign='middle'>";
+                                        if (empty($row['picture'])) {
+                                            if($row['sex'] == "Male")echo '<img src="../img/avatarM.png" width="100" height="100" class="w3-circle w3-card-2">';
+                                            else echo '<img src="../img/avatarF.png" width="100" height="100" class="w3-circle">';
+                                        } else echo '<img src="data:image/jpeg;base64,'.base64_encode( $row['picture'] ).'" width="100" height="100" class="w3-circle w3-card-2">';
+                                        echo "</td>
                                         <td>{$row['idnum']}</td>
                                         <td>{$row['firstname']} {$row['middleinitial']} {$row['lastname']}</td>
                                         <td>{$row['yearlevel']}</td>

@@ -1,14 +1,10 @@
 <?php
-    require '../script/session.php';
+    require_once '../script/session.php';
     $error2 = "";
     if (isset($_POST['logout_user'])) {
-        if (session_destroy()) {// Destroying All Sessions
-            $error2 = "Successfully Logout! Please come back soon!";
-            header('Refresh: 1; URL=../');
-        } else {
-            $error2 = "Already Logouadobet! Please come back soon!";
-            header('Refresh: 1; URL=../');
-        }
+        if (session_destroy()) $error2 = "Successfully Logout! Please come back soon!";    
+        else $error2 = "Already Logouadobet! Please come back soon!";
+        header('Refresh: 1; URL=../');
     } else {
         if(!isset($_SESSION['login_admin_id']) && !isset($_SESSION['login_voter_id'])) {
             $_SESSION['Error'] = "Please Login First!";
