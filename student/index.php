@@ -1,30 +1,41 @@
-s<?php
-    require '../script/session.php'; // Includes Login Script
-    $femalestudents = mysqli_query($con,"SELECT * FROM user WHERE sex='Female';");
-    $malestudents = mysqli_query($con,"SELECT * FROM user WHERE sex='Male';");
-    $voterstudents = mysqli_query($con,"SELECT * FROM user WHERE admintype='Student';");
-    $adminstudents = mysqli_query($con,"SELECT * FROM user WHERE admintype='Administrator';");
-    $result = mysqli_query($con,"SELECT course.name AS coursename, idnum, firstname, middleinitial, lastname, yearlevel, collegecode FROM user INNER JOIN course ON course_idcourse = idcourse INNER JOIN college ON college_idcollege = idcollege;");
-    if(isset($_SESSION['login_voter_id']))
-    {
+<?php
+    if ($_SERVER['HTTPS'] != "on") {
+        $url = "https://". $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
+        header("Location: $url");
+        exit(0);
+    }
+    require_once '../script/session.php'; // Includes Login Script
+    
+    if (isset($_SESSION['login_voter_id'])) {
         $_SESSION['error3'] = "Not Allowed!";
         header('location:../');
-    }else if(!isset($_SESSION['login_admin_id']))
-    {
+    } else if (!isset($_SESSION['login_admin_id'])) {
         $_SESSION['Error'] = "Please Login First!";
         header('location: ../admin');
     }
-    if(isset($_POST['logout_user']))
-    {
-        if(session_destroy()) // Destroying All Sessions
-        {
+    
+    if (isset($_POST['logout_user'])) {
+        if (session_destroy()) {  // Destroying All Sessions
             $error2 = "Successfully Logout! Please come back soon!";
             header('Refresh: 1; URL=../');
-        }else{
+        } else {
             $error2 = "Already Logout! Please come back soon!";
             header('Refresh: 1; URL=../');
         }
     }
+    $pdo = Database::connect();
+    $sql = "SELECT COUNT(*) FROM user WHERE sex='Female';";
+    $femalestudents = $pdo->query($sql)->fetchColumn();
+    $sql = "SELECT COUNT(*) FROM user WHERE sex='Male';";
+    $malestudents = $pdo->query($sql)->fetchColumn();
+    $sql = "SELECT COUNT(*) FROM user WHERE admintype='Student';";
+    $voterstudents = $pdo->query($sql)->fetchColumn();
+    $sql = "SELECT COUNT(*) FROM user WHERE admintype='Administrator';";
+    $adminstudents = $pdo->query($sql)->fetchColumn();
+    $sql = "SELECT course.name AS coursename, idnum, firstname, middleinitial, lastname, yearlevel, collegecode FROM user INNER JOIN course ON course_idcourse = idcourse INNER JOIN college ON college_idcollege = idcollege;";
+    $result = $pdo->query($sql);
+    $sql = "SELECT COUNT(*) FROM user INNER JOIN course ON course_idcourse = idcourse INNER JOIN college ON college_idcollege = idcollege;";
+    $resultNumber = $pdo->query($sql)->fetchColumn();
 ?>
 
 <!DOCTYPE html>
@@ -198,35 +209,22 @@ s<?php
                       ?>
             </form>
           </div>
-
-          <div id="Tokyo" class="tabcontent">
-            <h3>Data</h3>
-            <br>
-            <?php
-                $ro = mysqli_num_rows($result);
-                echo "Number of Registered Students: $ro";
-            ?>
-            <br><br>
-            <?php
-                $femalero = mysqli_num_rows($femalestudents);
-                echo "Number of Female Students: $femalero";
-            ?>
-            <br><br>
-            <?php
-                $malero = mysqli_num_rows($malestudents);
-                echo "Number of Male Students: $malero";
-            ?>
-            <br><br>
-            <?php
-                $voterro = mysqli_num_rows($voterstudents);
-                echo "Number of Voter Students: $voterro";
-            ?>
-            <br><br>
-            <?php
-                $adminro = mysqli_num_rows($adminstudents);
-                echo "Number of Admin Students: $adminro";
-            ?>
-          </div>
+        <div class="w3-container">
+            <div id="Tokyo" class="tabcontent">
+                <table class="w3-table">
+                    <tr>
+                        <th>Data</th>
+                    </tr>
+                    <?php
+                        echo "<tr><td>Number of Registered Students</td><td>:</td><td>$resultNumber</td></tr>
+                            <tr><td>Number of Female Students</td><td>:</td><td>$femalestudents</td></tr>
+                            <tr><td>Number of Male Students</td><td>:</td><td>$malestudents</td></tr>
+                            <tr><td>Number of Voter Students</td><td>:</td><td>$voterstudents</td></tr>
+                            <tr><td>Number of Admin Students</td><td>:</td><td>$adminstudents</td></tr>";
+                    ?>
+                </table>
+            </div>
+        </div>
 
           <script>
           function openCity(evt, cityName) {
@@ -252,5 +250,5 @@ s<?php
             Contact: <a href="mailto:josepricardo%40su.edu.ph">Mail Me</a>
 		        </address>
         </footer>
-        <?php mysqli_close($con); // Closing Connection?>
+        <?php Database::disconnect();?>
 </html>

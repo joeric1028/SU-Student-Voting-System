@@ -1,9 +1,9 @@
 <?php
-    // if ($_SERVER['HTTPS'] != "on") {
-    //     $url = "https://". $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
-    //     header("Location: $url");
-    //     exit;
-    // }
+    if ($_SERVER['HTTPS'] != "on") {
+        $url = "https://". $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
+        header("Location: $url");
+        exit;
+    }
     require_once '../script/login.php'; // Require Login Script
     if (isset($_SESSION['Error'])) {
         if ($_SESSION['Error'] == "Successfully Login!") header("Refresh:1; URL=../");
@@ -52,7 +52,7 @@
         <section id="pageContentCenter">
                 <div class="w3-container w3-center w3-round-xxlarge w3-blue w3-padding-16"><h2>Admin Login</h2></div>
                 <div class = "w3-container">
-                    <form class="w3-container" method="post" action="index.php">
+                    <form class="w3-container" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
                         <label class="w3-container w3-text-teal"><b>ID Number :</b></label>
                         <input class="w3-container w3-input w3-light-grey w3-border w3-padding" type="text" name="idnum" placeholder="Enter your ID Number" required>
                         <label class="w3-container w3-text-teal"><b>Password :</b></label>

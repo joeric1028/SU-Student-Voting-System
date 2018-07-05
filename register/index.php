@@ -1,10 +1,15 @@
 <?php
-require '../script/register.php'; // Requires Login Script
-if(!isset($_SESSION['login_admin_id']))
-{
-    $_SESSION['Error'] = "Please Login First!";
-    header('location: ../admin');
-}
+    if ($_SERVER['HTTPS'] != "on") {
+        $url = "https://". $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
+        header("Location: $url");
+        exit;
+    }
+    require '../script/register.php'; // Requires Login Script
+    if(!isset($_SESSION['login_admin_id']))
+    {
+        $_SESSION['Error'] = "Please Login First!";
+        header('location: ../admin');
+    }
 ?>
 <!DOCTYPE html>
 
